@@ -42,8 +42,10 @@ const getSavedOrMinusValueElement = (rowIndex, colValue) => {
 const getSaveOrMinusButton = (rowIndex) => {
     if(savedRows.has(rowIndex) === false)
         return <button onClick={() => saveRow(rowIndex)}>Save</button>;
+    else if (removedRows.has(rowIndex))
+        return <button onClick={() => removeRow(rowIndex)}>Show</button>;
     else 
-        return <button onClick={() => removeRow(rowIndex)}>-</button>;
+        return <button onClick={() => removeRow(rowIndex)}>Hide</button>;
 }
 
   return (
