@@ -5,9 +5,13 @@ export default function ScoreTable() {
 
 const players = ['a', 'b', 'c'];
 const [removedRows, setRemovedRows] = useState(new Set());
+const [savedRows, setSavedRows] = useState(new Set());
 const [rows, setRows] = useState([['1','0','1'], ['0','1','0']]);
 
 const addRow = () => {
+    if(savedRows.size !== rows.length)
+        return;
+
     let arr =  players.map(p => '');
     setRows([...rows, arr]);
 }
@@ -21,9 +25,25 @@ const removeRow = (index) => {
     setRemovedRows(new Set(removedRows));
 }
 
-const getOkOrMinusButton = (rowIndex, colValue) => {
-    const retVal = removedRows.has(rowIndex) ? '-' : <input type="text" defaultValue={colValue} />;
-    return retVal;
+const saveRow = (index) => {
+    savedRows.add(index);
+    setSavedRows(new Set(savedRows));
+ }
+
+const getSavedOrMinusValueElement = (rowIndex, colValue) => {
+    if(savedRows.has(rowIndex) === false)
+        return <input type="text" defaultValue={colValue}/>;
+    else if (removedRows.has(rowIndex))
+        return '-';
+    else 
+        return <p>{colValue}</p>;
+}
+
+const getSaveOrMinusButton = (rowIndex) => {
+    if(savedRows.has(rowIndex) === false)
+        return <button onClick={() => saveRow(rowIndex)}>Save</button>;
+    else 
+        return <button onClick={() => removeRow(rowIndex)}>-</button>;
 }
 
   return (
@@ -42,12 +62,12 @@ const getOkOrMinusButton = (rowIndex, colValue) => {
                 <tr key={'rows' + rIndex}>
                     {row.map((col, cIndex) => (
                             <td key={players[cIndex] + rIndex}>
-                                {getOkOrMinusButton(rIndex, col)}
+                                {getSavedOrMinusValueElement(rIndex, col)}
                             </td>
                         ))
                     }
                     <td>
-                        <button onClick={() => removeRow(rIndex)}>-</button>
+                        {getSaveOrMinusButton(rIndex)}
                     </td>
                 </tr>
             ))}
