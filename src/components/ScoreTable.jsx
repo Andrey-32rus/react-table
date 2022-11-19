@@ -37,7 +37,7 @@ const removeRow = (index) => {
                 <tr key={'rows' + rIndex}>
                     {row.map((col, cIndex) => (
                             <td key={players[cIndex] + rIndex}>
-                                {removedRows.has(rIndex) ? '-' : col}
+                                {removedRows.has(rIndex) ? '-' : <input type="text" defaultValue={col} />}
                             </td>
                         ))
                     }
