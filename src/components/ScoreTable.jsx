@@ -32,9 +32,15 @@ const saveRow = (index) => {
     setSavedRows(new Set(savedRows));
  }
 
-const getSavedOrMinusValueElement = (rowIndex, colValue) => {
+const changeInputText = (rowIndex, colIndex, text) => {
+    let newRows = [...rows];
+    newRows[rowIndex][colIndex] = text;
+    setRows(newRows);
+}
+
+const getSavedOrMinusValueElement = (rowIndex, colIndex, colValue) => {
     if(savedRows.has(rowIndex) === false)
-        return <input type="text" defaultValue={colValue}/>;
+        return <input type="text" defaultValue={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)}/>;
     else if (removedRows.has(rowIndex))
         return '-';
     else 
@@ -66,7 +72,7 @@ const getSaveOrMinusButton = (rowIndex) => {
                 <tr key={'rows' + rIndex}>
                     {row.map((col, cIndex) => (
                             <td key={players[cIndex] + rIndex}>
-                                {getSavedOrMinusValueElement(rIndex, col)}
+                                {getSavedOrMinusValueElement(rIndex, cIndex, col)}
                             </td>
                         ))
                     }
