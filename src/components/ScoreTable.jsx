@@ -58,7 +58,7 @@ const getSaveOrMinusButton = (rowIndex) => {
 
   return (
     <div>
-        <table>
+        <table width='100%'>
             <thead>
                 <tr>
                     {players.map(player => (
