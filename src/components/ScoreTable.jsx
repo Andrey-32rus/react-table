@@ -9,8 +9,10 @@ const [savedRows, setSavedRows] = useState(new Set());
 const [rows, setRows] = useState([['1','0','1'], ['0','1','0']]);
 
 const addRow = () => {
-    if(savedRows.size !== rows.length)
+    if(savedRows.size !== rows.length) {
+        alert('Есть несохранённая строка! Нельзя добавить больше одной несохранённой строки. Сохраните последнюю, потом добавляйте новую пустую');
         return;
+    }
 
     let arr =  players.map(p => '');
     setRows([...rows, arr]);
