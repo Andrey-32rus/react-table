@@ -21,6 +21,11 @@ const removeRow = (index) => {
     setRemovedRows(new Set(removedRows));
 }
 
+const getOkOrMinusButton = (rowIndex, colValue) => {
+    const retVal = removedRows.has(rowIndex) ? '-' : <input type="text" defaultValue={colValue} />;
+    return retVal;
+}
+
   return (
     <div>
         <table>
@@ -37,7 +42,7 @@ const removeRow = (index) => {
                 <tr key={'rows' + rIndex}>
                     {row.map((col, cIndex) => (
                             <td key={players[cIndex] + rIndex}>
-                                {removedRows.has(rIndex) ? '-' : <input type="text" defaultValue={col} />}
+                                {getOkOrMinusButton(rIndex, col)}
                             </td>
                         ))
                     }
