@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from 'react';
-import { Table } from 'react-bootstrap/Table';
-import { Container } from 'react-bootstrap/Container';
+import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 export default function ScoreTable() {
 
@@ -42,24 +44,24 @@ const changeInputText = (rowIndex, colIndex, text) => {
 
 const getSavedOrMinusValueElement = (rowIndex, colIndex, colValue) => {
     if(savedRows.has(rowIndex) === false)
-        return <input type="text" defaultValue={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)}/>;
+        return <Form.Control type="text" defaultValue={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)}/>;
     else if (removedRows.has(rowIndex))
         return '-';
     else 
-        return <p>{colValue}</p>;
+        return <Form.Control type="text" defaultValue={colValue} disabled readOnly/>;
 }
 
 const getSaveOrMinusButton = (rowIndex) => {
     if(savedRows.has(rowIndex) === false)
-        return <button onClick={() => saveRow(rowIndex)}>Save</button>;
+        return <Button variant='secondary' onClick={() => saveRow(rowIndex)}>Save</Button>;
     else if (removedRows.has(rowIndex))
-        return <button onClick={() => removeRow(rowIndex)}>Show</button>;
+        return <Button variant='secondary' onClick={() => removeRow(rowIndex)}>Show</Button>;
     else 
-        return <button onClick={() => removeRow(rowIndex)}>Hide</button>;
+        return <Button variant='secondary' onClick={() => removeRow(rowIndex)}>Hide</Button>;
 }
 
   return (
-    <Container>
+    <Container fluid>
         <Table striped bordered>
             <thead>
                 <tr>
@@ -85,7 +87,7 @@ const getSaveOrMinusButton = (rowIndex) => {
             ))}
             </tbody>
         </Table>
-        <button onClick={addRow}>+</button>
+        <Button variant="primary" onClick={addRow}>+</Button>
     </Container>
   )
 }
