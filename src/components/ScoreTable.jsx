@@ -46,9 +46,9 @@ const getSavedOrMinusValueElement = (rowIndex, colIndex, colValue) => {
     if(savedRows.has(rowIndex) === false)
         return <Form.Control type="text" defaultValue={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)}/>;
     else if (removedRows.has(rowIndex))
-        return '-';
+        return <Form.Control type="text" defaultValue='-' value='-' disabled readOnly/>;
     else 
-        return <Form.Control type="text" defaultValue={colValue} disabled readOnly/>;
+        return <Form.Control type="text"  defaultValue={colValue} value={colValue} disabled readOnly/>;
 }
 
 const getSaveOrMinusButton = (rowIndex) => {
