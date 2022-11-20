@@ -23,6 +23,7 @@ export default function InputUsersPage() {
 
   const savePlayer = () => {
     if (playerName === '') return;
+    if (players.length >= 4) return;
 
     let newPlayers = [...players];
     newPlayers.push(playerName);
