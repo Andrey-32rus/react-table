@@ -1,5 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
+import { Table } from 'react-bootstrap/Table';
+import { Container } from 'react-bootstrap/Container';
 
 export default function ScoreTable() {
 
@@ -57,8 +59,8 @@ const getSaveOrMinusButton = (rowIndex) => {
 }
 
   return (
-    <div>
-        <table width='100%'>
+    <Container>
+        <Table striped bordered>
             <thead>
                 <tr>
                     {players.map(player => (
@@ -82,8 +84,8 @@ const getSaveOrMinusButton = (rowIndex) => {
                 </tr>
             ))}
             </tbody>
-        </table>
+        </Table>
         <button onClick={addRow}>+</button>
-    </div>
+    </Container>
   )
 }
