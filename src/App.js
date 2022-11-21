@@ -10,9 +10,10 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path={routes.inputUsers} element={<InputUsersPage/>}/>
-        <Route path={routes.scoreTable} element={<ScoreTable />} />
-        <Route path={'/side'} element={<Sidebar />} />
+        <Route path={'/'} element={<Sidebar />}>
+          <Route path={''} element={<InputUsersPage />} />
+          <Route path={'score'} element={<ScoreTable />} />
+        </Route>
       </Routes>
     </>
   );

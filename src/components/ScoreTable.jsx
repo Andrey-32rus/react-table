@@ -97,6 +97,7 @@ export default function ScoreTable() {
 
   return (
     <Container fluid>
+      <h3 className='mb-2'>Таблица игры</h3>
       <Table striped bordered>
         <thead>
           <tr>
