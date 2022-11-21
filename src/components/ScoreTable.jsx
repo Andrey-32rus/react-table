@@ -4,13 +4,17 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useLocation } from 'react-router-dom';
+import store from '../store/store';
 
 export default function ScoreTable() {
 
-  const players = ['a', 'b', 'c'];
+  const location = useLocation();
+
+  const players = location.state;
   const [removedRows, setRemovedRows] = useState(new Set());
   const [savedRows, setSavedRows] = useState(new Set());
-  const [rows, setRows] = useState([['1', '0', '1'], ['0', '1', '0']]);
+  const [rows, setRows] = useState([]);
 
   const addRow = () => {
     if (savedRows.size !== rows.length) {
@@ -39,7 +43,9 @@ export default function ScoreTable() {
   const changeInputText = (rowIndex, colIndex, text) => {
     let newRows = [...rows];
     newRows[rowIndex][colIndex] = text;
+
     setRows(newRows);
+    store.saveData(players, newRows);
   }
 
   const getSavedOrMinusValueElement = (rowIndex, colIndex, colValue) => {

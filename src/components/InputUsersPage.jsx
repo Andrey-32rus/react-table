@@ -5,8 +5,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../navigation/navigation';
+import store from '../store/store';
 
 export default function InputUsersPage() {
+
+  const navigate = useNavigate();
 
   const [playerName, setPlayerName] = useState('');
   const [players, setPlayers] = useState([]);
@@ -29,6 +34,11 @@ export default function InputUsersPage() {
     newPlayers.push(playerName);
     setPlayers(newPlayers);
     setPlayerName('');
+  }
+
+  const startGame = () => {
+    store.saveData(players, [])
+    navigate(routes.scoreTable, {state: players});
   }
 
   return (
@@ -55,7 +65,7 @@ export default function InputUsersPage() {
           </Col>
         </Row>}
 
-      <Button variant='primary mt-3'>Start game</Button>
+      <Button variant='primary mt-3' onClick={startGame}>Start game</Button>
     </Container>
   )
 }
