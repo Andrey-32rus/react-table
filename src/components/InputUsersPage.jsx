@@ -43,30 +43,32 @@ export default function InputUsersPage() {
   }
 
   return (
-    <Container fluid>
-      <h3>Введите имена игроков</h3>
-      {players.map((player, i) => (
-        <Row key={player + i} md className='mt-2'>
-          <Col md='8'>
-            <Form.Control type="text" defaultValue={player} disabled readOnly />
-          </Col>
-          <Col>
-            <Button variant='success' onClick={() => removePlayer(i)}>Remove</Button>
-          </Col>
-        </Row>
-      ))}
-      {players.length < 4
-        &&
-        <Row md className='mt-4'>
-          <Col md='8'>
-            <Form.Control type="text" placeholder='имя игрока' value={playerName} onChange={e => changePlayerName(e.target.value)} />
-          </Col>
-          <Col>
-            <Button variant='success' onClick={savePlayer}>Save</Button>
-          </Col>
-        </Row>}
+    <>
+      <h3 className='text-center'>Введите имена игроков</h3>
+      <Container fluid>
+        {players.map((player, i) => (
+          <Row key={player + i} className='mt-2'>
+            <Col sm='8' xs='8'>
+              <Form.Control type="text" defaultValue={player} disabled readOnly />
+            </Col>
+            <Col>
+              <Button variant='success' onClick={() => removePlayer(i)}>Remove</Button>
+            </Col>
+          </Row>
+        ))}
+        {players.length < 4
+          &&
+          <Row className='mt-4'>
+            <Col sm='8' xs='8'>
+              <Form.Control type="text" placeholder='имя игрока' value={playerName} onChange={e => changePlayerName(e.target.value)} />
+            </Col>
+            <Col>
+              <Button variant='success' onClick={savePlayer}>Save</Button>
+            </Col>
+          </Row>}
 
-      <Button variant='primary mt-3' onClick={startGame}>Start game</Button>
-    </Container>
+        <Button variant='primary mt-3' onClick={startGame}>Start game</Button>
+      </Container>
+    </>
   )
 }
