@@ -1,20 +1,48 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useLocation } from 'react-router-dom';
 import store from '../store/store';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../navigation/navigation';
 
 export default function ScoreTable() {
 
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const players = location.state;
   const [removedRows, setRemovedRows] = useState(new Set());
   const [savedRows, setSavedRows] = useState(new Set());
+  const [players, setPlayers] = useState([]);
   const [rows, setRows] = useState([]);
+
+//#region effects
+  useEffect(() => {
+    if (location.state) {
+      setPlayers(location.state);
+      setRows([]);
+    }
+    else {
+      const storeData = store.getData();
+
+      if (storeData) {
+        setPlayers(storeData.players);
+        setRows(storeData.rows);
+      }
+      else {
+        navigate(routes.inputUsers, { replace: true})
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if(players.length == 0)
+      return
+    store.saveData(players, rows)
+  }, [players, rows])
 
   const addRow = () => {
     if (savedRows.size !== rows.length) {
@@ -25,6 +53,7 @@ export default function ScoreTable() {
     let arr = players.map(p => '');
     setRows([...rows, arr]);
   }
+//#endregion
 
   const removeRow = (index) => {
     if (removedRows.has(index))
@@ -45,9 +74,8 @@ export default function ScoreTable() {
     newRows[rowIndex][colIndex] = text;
 
     setRows(newRows);
-    store.saveData(players, newRows);
   }
-
+//#region Render functions
   const getSavedOrMinusValueElement = (rowIndex, colIndex, colValue) => {
     if (savedRows.has(rowIndex) === false)
       return <Form.Control type="text" defaultValue={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)} />;
@@ -65,6 +93,7 @@ export default function ScoreTable() {
     else
       return <Button variant='secondary' onClick={() => removeRow(rowIndex)}>Hide</Button>;
   }
+//#endregion
 
   return (
     <Container fluid>

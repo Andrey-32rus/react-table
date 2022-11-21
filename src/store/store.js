@@ -4,4 +4,8 @@ const saveData = (players, rows) => {
   localStorage.setItem(key, JSON.stringify({players, rows}));
 }
 
-export default {saveData};
+const getData = () => {
+  return JSON.parse(localStorage.getItem(key));
+}
+
+export default {saveData, getData};

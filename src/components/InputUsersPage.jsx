@@ -7,7 +7,6 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
-import store from '../store/store';
 
 export default function InputUsersPage() {
 
@@ -37,7 +36,6 @@ export default function InputUsersPage() {
   }
 
   const startGame = () => {
-    store.saveData(players, [])
     navigate(routes.scoreTable, {state: players});
   }
 

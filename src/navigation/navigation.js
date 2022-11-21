@@ -1,4 +1,4 @@
 export const routes = {
-  inputUsers: '',
-  scoreTable: 'score',
+  inputUsers: '/',
+  scoreTable: '/score',
 }
