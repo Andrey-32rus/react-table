@@ -87,11 +87,11 @@ export default function ScoreTable() {
 
   const getSaveOrMinusButton = (rowIndex) => {
     if (savedRows.has(rowIndex) === false)
-      return <Button variant='secondary' onClick={() => saveRow(rowIndex)}>Save</Button>;
+      return <Button variant='success' onClick={() => saveRow(rowIndex)}>Save</Button>;
     else if (removedRows.has(rowIndex))
       return <Button variant='secondary' onClick={() => removeRow(rowIndex)}>Show</Button>;
     else
-      return <Button variant='secondary' onClick={() => removeRow(rowIndex)}>Hide</Button>;
+      return <Button variant='danger' onClick={() => removeRow(rowIndex)}>Hide</Button>;
   }
 //#endregion
 
