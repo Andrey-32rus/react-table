@@ -38,7 +38,8 @@ export default function InputUsersPage() {
   const startGame = () => {
     if(players.length < 3)
       return;
-    navigate(routes.scoreTable, {state: players});
+    if(window.confirm('Результаты старой игры удаляться. Уверен?!'))
+      navigate(routes.scoreTable, {state: players});
   }
 
   return (
