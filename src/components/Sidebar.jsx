@@ -29,6 +29,11 @@ export default function Sidebar() {
                   Страница игры
                 </NavLink>
               </li>
+              <li>
+                <NavLink to={'history'} className={setActive}>
+                  История игр
+                </NavLink>
+              </li>
             </ul>
           </div>
         </Col>
