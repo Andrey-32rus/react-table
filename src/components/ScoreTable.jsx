@@ -101,17 +101,17 @@ export default function ScoreTable() {
       <Table striped bordered>
         <thead>
           <tr>
-            {players.map(player => (
-              <td key={player}>{player}</td>
+            {players.map((player, i) => (
+              <td key={player + i} className='text-center'>{player}</td>
             ))}
           </tr>
         </thead>
 
         <tbody>
           {rows.map((row, rIndex) => (
-            <tr key={'rows' + rIndex}>
+            <tr key={'row' + rIndex}>
               {row.map((col, cIndex) => (
-                <td key={players[cIndex] + rIndex}>
+                <td key={'col' + rIndex + cIndex}>
                   {getSavedOrMinusValueElement(rIndex, cIndex, col)}
                 </td>
               ))

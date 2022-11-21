@@ -36,6 +36,8 @@ export default function InputUsersPage() {
   }
 
   const startGame = () => {
+    if(players.length < 3)
+      return;
     navigate(routes.scoreTable, {state: players});
   }
 
@@ -44,7 +46,7 @@ export default function InputUsersPage() {
       <h3>Введите имена игроков</h3>
       {players.map((player, i) => (
         <Row key={player + i} md className='mt-2'>
-          <Col md='10'>
+          <Col md='8'>
             <Form.Control type="text" defaultValue={player} disabled readOnly />
           </Col>
           <Col>
