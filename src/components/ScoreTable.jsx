@@ -2,6 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useLocation } from 'react-router-dom';
@@ -123,7 +125,14 @@ export default function ScoreTable() {
           ))}
         </tbody>
       </Table>
-      <Button variant="primary" onClick={addRow}>+</Button>
+      <div>
+        <div>
+          <Button variant="primary" onClick={addRow}>+</Button>
+        </div>
+        <div className='d-flex flex-row-reverse mt-2'>
+          <Button variant="success" onClick={addRow}>save game</Button>
+        </div>
+      </div>
     </Container>
   )
 }
