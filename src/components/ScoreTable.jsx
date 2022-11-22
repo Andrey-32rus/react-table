@@ -25,7 +25,6 @@ export default function ScoreTable() {
   useEffect(() => {
     if (location.state) {
       setPlayers(location.state);
-      setRows([]);
     }
     else {
       const storeData = store.getData();
@@ -45,6 +44,16 @@ export default function ScoreTable() {
       return
     store.saveData(players, rows)
   }, [players, rows])
+
+  useEffect(() => {
+    console.log(removedRows.entries())
+    store.saveRemovedRows([...removedRows])
+  }, [removedRows])
+
+  useEffect(() => {
+    console.log(savedRows.entries())
+    store.saveSavedRows([...savedRows])
+  }, [savedRows])
 
   const addRow = () => {
     if (savedRows.size !== rows.length) {

@@ -8,4 +8,12 @@ const getData = () => {
   return JSON.parse(localStorage.getItem(key));
 }
 
-export default {saveData, getData};
+const saveSavedRows = (savedRows) => {
+  localStorage.setItem('savedRows', JSON.stringify(savedRows));
+}
+
+const saveRemovedRows = (removedRows) => {
+  localStorage.setItem('removedRows', JSON.stringify(removedRows));
+}
+
+export default { saveData, getData, saveSavedRows, saveRemovedRows };
