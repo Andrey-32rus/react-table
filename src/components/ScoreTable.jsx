@@ -87,8 +87,8 @@ export default function ScoreTable() {
   const saveGame = () => {
     const gameName = window.prompt('Введите название сохранения игры');
     if(gameName == null)  return;
-    
-    var saves = store.getSavedGame();
+
+    var saves = store.getSavedGames();
     if (saves[gameName]) {
       window.alert('C таким названием уже существует');
       return;

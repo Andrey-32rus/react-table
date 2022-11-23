@@ -10,7 +10,7 @@ import { routes } from '../navigation/navigation';
 export default function HistoryPage() {
 
   const navigate = useNavigate();
-  const saves = store.getSavedGame();
+  const saves = store.getSavedGames();
   
   const loadGame = (gameName) => {
     if (window.confirm('Результаты старой игры удаляться. Уверен?!'))

@@ -32,8 +32,8 @@ const saveGame = (gameName, players, rows, removedRows, savedRows) => {
   localStorage.setItem('saves', JSON.stringify(data));
 }
 
-const getSavedGame = () => {
+const getSavedGames = () => {
   return JSON.parse(localStorage.getItem('saves'));
 }
 
-export default { saveData, getData, saveSavedRows, getSavedRows, saveRemovedRows, getRemovedRows, saveGame, getSavedGame };
+export default { saveData, getData, saveSavedRows, getSavedRows, saveRemovedRows, getRemovedRows, saveGame, getSavedGames };
