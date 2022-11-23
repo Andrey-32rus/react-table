@@ -24,7 +24,10 @@ export default function ScoreTable() {
 //#region effects
   useEffect(() => {
     if (location.state) {
-      setPlayers(location.state);
+      setPlayers(location.state.players);
+      setRows(location.state.rows);
+      setRemovedRows(new Set(location.state.removedRows));
+      setSavedRows(new Set(location.state.savedRows));
     }
     else {
       const storeData = store.getData();
@@ -84,6 +87,13 @@ export default function ScoreTable() {
   const saveGame = () => {
     const gameName = window.prompt('Введите название сохранения игры');
     if(gameName == null)  return;
+    
+    var saves = store.getSavedGame();
+    if (saves[gameName]) {
+      window.alert('C таким названием уже существует');
+      return;
+    }
+
     store.saveGame(gameName, players, rows, [...removedRows], [...savedRows]);
   }
 

@@ -39,7 +39,7 @@ export default function InputUsersPage() {
     if(players.length < 3)
       return;
     if(window.confirm('Результаты старой игры удаляться. Уверен?!'))
-      navigate(routes.scoreTable, {state: players});
+      navigate(routes.scoreTable, { state: { players, rows: [], removedRows: [], savedRows: [] } });
   }
 
   return (
