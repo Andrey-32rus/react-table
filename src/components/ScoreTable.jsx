@@ -98,7 +98,7 @@ export default function ScoreTable() {
   }
 
   const changeInputText = (rowIndex, colIndex, text) => {
-    let newRows = [...rows];
+    const newRows = [...rows];
     newRows[rowIndex][colIndex] = text;
 
     setRows(newRows);
