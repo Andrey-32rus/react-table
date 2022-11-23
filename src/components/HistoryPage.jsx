@@ -2,7 +2,7 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import store from '../store/store';
+import ls from '../store/localStorageWrapper';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
@@ -10,7 +10,7 @@ import { routes } from '../navigation/navigation';
 export default function HistoryPage() {
 
   const navigate = useNavigate();
-  const saves = store.getSavedGames();
+  const saves = ls.getSavedGames();
   
   const loadGame = (gameName) => {
     if (window.confirm('Результаты старой игры удаляться. Уверен?!'))

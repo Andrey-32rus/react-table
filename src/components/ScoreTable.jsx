@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useLocation } from 'react-router-dom';
-import store from '../store/store';
+import ls from '../store/localStorageWrapper';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
 
@@ -30,13 +30,13 @@ export default function ScoreTable() {
       setSavedRows(new Set(location.state.savedRows));
     }
     else {
-      const storeData = store.getData();
+      const lsData = ls.getData();
 
-      if (storeData) {
-        setPlayers(storeData.players);
-        setRows(storeData.rows);
-        setRemovedRows(new Set(store.getRemovedRows()));
-        setSavedRows(new Set(store.getSavedRows()));
+      if (lsData) {
+        setPlayers(lsData.players);
+        setRows(lsData.rows);
+        setRemovedRows(new Set(ls.getRemovedRows()));
+        setSavedRows(new Set(ls.getSavedRows()));
       }
       else {
         navigate(routes.inputUsers, { replace: true})
@@ -46,17 +46,17 @@ export default function ScoreTable() {
 
   useEffect(() => {
     if(players.length == 0) return;
-    store.saveData(players, rows)
+    ls.saveData(players, rows)
   }, [players, rows])
 
   useEffect(() => {
     if (removedRows == null) return;
-    store.saveRemovedRows([...removedRows])
+    ls.saveRemovedRows([...removedRows])
   }, [removedRows])
 
   useEffect(() => {
     if(savedRows == null) return;
-    store.saveSavedRows([...savedRows])
+    ls.saveSavedRows([...savedRows])
   }, [savedRows])
 //#endregion
 
@@ -88,13 +88,13 @@ export default function ScoreTable() {
     const gameName = window.prompt('Введите название сохранения игры');
     if(gameName == null)  return;
 
-    var saves = store.getSavedGames();
+    var saves = ls.getSavedGames();
     if (saves[gameName]) {
       window.alert('C таким названием уже существует');
       return;
     }
 
-    store.saveGame(gameName, players, rows, [...removedRows], [...savedRows]);
+    ls.saveGame(gameName, players, rows, [...removedRows], [...savedRows]);
   }
 
   const changeInputText = (rowIndex, colIndex, text) => {
