@@ -20,7 +20,7 @@ export default function Sidebar() {
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
               <li className="nav-item">
-                <NavLink to={routes.inputUsers} className={setActive} aria-current="page">
+                <NavLink to={'inputUsers'} className={setActive} aria-current="page">
                   Ввод игроков
                 </NavLink>
               </li>
