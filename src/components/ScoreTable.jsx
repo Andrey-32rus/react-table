@@ -16,8 +16,8 @@ export default function ScoreTable() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [removedRows, setRemovedRows] = useState(new Set());
-  const [savedRows, setSavedRows] = useState(new Set());
+  const [removedRows, setRemovedRows] = useState(null);
+  const [savedRows, setSavedRows] = useState(null);
   const [players, setPlayers] = useState([]);
   const [rows, setRows] = useState([]);
 
@@ -32,6 +32,8 @@ export default function ScoreTable() {
       if (storeData) {
         setPlayers(storeData.players);
         setRows(storeData.rows);
+        setRemovedRows(new Set(store.getRemovedRows()));
+        setSavedRows(new Set(store.getSavedRows()));
       }
       else {
         navigate(routes.inputUsers, { replace: true})
@@ -40,20 +42,20 @@ export default function ScoreTable() {
   }, [])
 
   useEffect(() => {
-    if(players.length == 0)
-      return
+    if(players.length == 0) return;
     store.saveData(players, rows)
   }, [players, rows])
 
   useEffect(() => {
-    console.log(removedRows.entries())
+    if (removedRows == null) return;
     store.saveRemovedRows([...removedRows])
   }, [removedRows])
 
   useEffect(() => {
-    console.log(savedRows.entries())
+    if(savedRows == null) return;
     store.saveSavedRows([...savedRows])
   }, [savedRows])
+//#endregion
 
   const addRow = () => {
     if (savedRows.size !== rows.length) {
@@ -64,7 +66,6 @@ export default function ScoreTable() {
     let arr = players.map(p => '');
     setRows([...rows, arr]);
   }
-//#endregion
 
   const removeRow = (index) => {
     if (removedRows.has(index))
@@ -78,6 +79,12 @@ export default function ScoreTable() {
   const saveRow = (index) => {
     savedRows.add(index);
     setSavedRows(new Set(savedRows));
+  }
+
+  const saveGame = () => {
+    const gameName = window.prompt('Введите название сохранения игры');
+    if(gameName == null)  return;
+    store.saveGame(gameName, players, rows, [...removedRows], [...savedRows]);
   }
 
   const changeInputText = (rowIndex, colIndex, text) => {
@@ -139,7 +146,7 @@ export default function ScoreTable() {
           <Button variant="primary" onClick={addRow}>+</Button>
         </div>
         <div className='d-flex flex-row-reverse mt-2'>
-          <Button variant="success" onClick={addRow}>save game</Button>
+          <Button variant="success" onClick={saveGame}>save game</Button>
         </div>
       </div>
     </Container>

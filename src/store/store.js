@@ -12,8 +12,24 @@ const saveSavedRows = (savedRows) => {
   localStorage.setItem('savedRows', JSON.stringify(savedRows));
 }
 
+const getSavedRows = () => {
+  return JSON.parse(localStorage.getItem('savedRows'));
+}
+
 const saveRemovedRows = (removedRows) => {
   localStorage.setItem('removedRows', JSON.stringify(removedRows));
 }
 
-export default { saveData, getData, saveSavedRows, saveRemovedRows };
+const getRemovedRows = () => {
+  return JSON.parse(localStorage.getItem('removedRows'));
+}
+
+//потом дописать по человечески
+const saveGame = (gameName, players, rows, removedRows, savedRows) => {
+  var data = JSON.parse(localStorage.getItem('saves'));
+  if(data == null) data={};
+  data[gameName] = { players, rows, removedRows, savedRows }
+  localStorage.setItem('saves', JSON.stringify(data));
+}
+
+export default { saveData, getData, saveSavedRows, getSavedRows, saveRemovedRows, getRemovedRows, saveGame };
