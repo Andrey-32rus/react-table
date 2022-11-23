@@ -6,15 +6,21 @@ import ls from '../store/localStorageWrapper';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
+import { useDispatch } from 'react-redux'
+import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 
 export default function HistoryPage() {
 
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const saves = ls.getSavedGames();
   
   const loadGame = (gameName) => {
-    if (window.confirm('Результаты старой игры удаляться. Уверен?!'))
-      navigate(routes.scoreTable, { state: saves[gameName] });
+    if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
+      dispatch(setChangedData(saves[gameName]))
+      navigate(routes.scoreTable);
+    }
+      
   }
 
   const renderSaves = () => {

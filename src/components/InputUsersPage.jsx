@@ -7,9 +7,12 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
+import { useDispatch } from 'react-redux'
+import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 
 export default function InputUsersPage() {
 
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
   const [playerName, setPlayerName] = useState('');
@@ -38,8 +41,10 @@ export default function InputUsersPage() {
   const startGame = () => {
     if(players.length < 3)
       return;
-    if(window.confirm('Результаты старой игры удаляться. Уверен?!'))
-      navigate(routes.scoreTable, { state: { players, rows: [], removedRows: [], savedRows: [] } });
+    if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
+      dispatch(setChangedData({ players, rows: [], removedRows: [], savedRows: [] }))
+      navigate(routes.scoreTable);
+    }
   }
 
   return (

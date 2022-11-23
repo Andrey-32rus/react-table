@@ -10,11 +10,15 @@ import { useLocation } from 'react-router-dom';
 import ls from '../store/localStorageWrapper';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
+import { useSelector, useDispatch } from 'react-redux'
+import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 
 export default function ScoreTable() {
 
+  const changedData = useSelector(state => state.changeScoreTable.data)
+  const dispatch = useDispatch()
+
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [removedRows, setRemovedRows] = useState(null);
   const [savedRows, setSavedRows] = useState(null);
@@ -23,11 +27,13 @@ export default function ScoreTable() {
 
 //#region effects
   useEffect(() => {
-    if (location.state) {
-      setPlayers(location.state.players);
-      setRows(location.state.rows);
-      setRemovedRows(new Set(location.state.removedRows));
-      setSavedRows(new Set(location.state.savedRows));
+    if (changedData) {
+      setPlayers(changedData.players);
+      setRows(changedData.rows);
+      setRemovedRows(new Set(changedData.removedRows));
+      setSavedRows(new Set(changedData.savedRows));
+
+      dispatch(setChangedData(null))
     }
     else {
       const lsData = ls.getData();
