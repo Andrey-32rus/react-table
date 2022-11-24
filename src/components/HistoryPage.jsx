@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -13,14 +14,24 @@ export default function HistoryPage() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
-  const saves = ls.getSavedGames();
+  const [saves, setSaves] = useState({});
   
+  useEffect(() => {
+    setSaves(ls.getSavedGames())
+  }, [])
+
   const loadGame = (gameName) => {
     if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
       dispatch(setChangedData(saves[gameName]))
       navigate(routes.scoreTable);
     }
-      
+  }
+
+  const deleteGame = (gameName) => {
+    if (window.confirm('Удаляешь. Уверен?!')) {
+      var updatedSaves = ls.deleteGameAndGetGames(gameName)
+      setSaves(updatedSaves)
+    }
   }
 
   const renderSaves = () => {
@@ -38,6 +49,9 @@ export default function HistoryPage() {
             </Col>
             <Col sm='1'>
               <Button variant='success' onClick={() => loadGame(key)}>load</Button>
+            </Col>
+            <Col sm='1'>
+              <Button variant='danger' onClick={() => deleteGame(key)}>delete</Button>
             </Col>
           </Row>
         )
