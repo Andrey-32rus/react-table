@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
 import { useDispatch } from 'react-redux'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
+import ModalDialog from './ModalDialog';
 
 export default function HistoryPage() {
 
@@ -33,6 +34,13 @@ export default function HistoryPage() {
       setSaves(updatedSaves)
     }
   }
+
+  //#region POPUS
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  //#endregion
 
   const renderSaves = () => {
     let retVal = [];
@@ -65,6 +73,23 @@ export default function HistoryPage() {
   return (
     <Container fluid>
       {renderSaves()}
+      <ModalDialog 
+        show={show}
+        onHide={handleClose}>
+          {{
+          title: 'title',
+          body: 'body',
+          footer: 
+          <>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </>
+          }}
+      </ModalDialog>
     </Container>
   )
 }
