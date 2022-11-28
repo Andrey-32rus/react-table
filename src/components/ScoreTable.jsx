@@ -1,17 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { useLocation } from 'react-router-dom';
+
 import ls from '../store/localStorageWrapper';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
 import { useSelector, useDispatch } from 'react-redux'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
+import GameTable from './UI/GameTable';
 
 export default function ScoreTable() {
 
@@ -76,6 +73,13 @@ export default function ScoreTable() {
     setRows([...rows, arr]);
   }
 
+  const changeInputText = (rowIndex, colIndex, text) => {
+    const newRows = [...rows];
+    newRows[rowIndex][colIndex] = text;
+
+    setRows(newRows);
+  }
+
   const removeRow = (index) => {
     if (removedRows.has(index))
       removedRows.delete(index)
@@ -103,60 +107,20 @@ export default function ScoreTable() {
     ls.saveGame(gameName, players, rows, [...removedRows], [...savedRows]);
   }
 
-  const changeInputText = (rowIndex, colIndex, text) => {
-    const newRows = [...rows];
-    newRows[rowIndex][colIndex] = text;
-
-    setRows(newRows);
-  }
-//#region Render functions
-  const getSavedOrMinusValueElement = (rowIndex, colIndex, colValue) => {
-    if (savedRows.has(rowIndex) === false)
-      return <Form.Control type="text" value={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)} />;
-    else if (removedRows.has(rowIndex))
-      return <Form.Control type="text" value='-' disabled readOnly />;
-    else
-      return <Form.Control type="text" value={colValue} disabled readOnly />;
-  }
-
-  const getSaveOrMinusButton = (rowIndex) => {
-    if (savedRows.has(rowIndex) === false)
-      return <Button variant='success' onClick={() => saveRow(rowIndex)}>Save</Button>;
-    else if (removedRows.has(rowIndex))
-      return <Button variant='secondary' onClick={() => removeRow(rowIndex)}>Show</Button>;
-    else
-      return <Button variant='danger' onClick={() => removeRow(rowIndex)}>Hide</Button>;
-  }
-//#endregion
+  
 
   return (
     <Container fluid>
       <h3 className='mb-2'>Таблица игры</h3>
-      <Table striped bordered>
-        <thead>
-          <tr>
-            {players.map((player, i) => (
-              <td key={player + i} className='text-center'>{player}</td>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {rows.map((row, rIndex) => (
-            <tr key={'row' + rIndex}>
-              {row.map((col, cIndex) => (
-                <td key={'col' + rIndex + cIndex}>
-                  {getSavedOrMinusValueElement(rIndex, cIndex, col)}
-                </td>
-              ))
-              }
-              <td>
-                {getSaveOrMinusButton(rIndex)}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <GameTable
+        players={players}
+        rows={rows}
+        removedRows={removedRows}
+        savedRows={savedRows}
+        changeInputText={changeInputText}
+        removeRow={removeRow}
+        saveRow={saveRow}
+      />
       <div>
         <div>
           <Button variant="primary" onClick={addRow}>+</Button>
