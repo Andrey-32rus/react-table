@@ -35,6 +35,10 @@ export default function HistoryPage() {
     }
   }
 
+  const viewGameHistory = (gameName) => {
+    navigate(gameName)
+  }
+
   //#region POPUS
   const [show, setShow] = useState(false);
 
@@ -49,10 +53,10 @@ export default function HistoryPage() {
         const element = saves[key];
         const row = (
           <Row key={key} className='mb-2'>
-            <Col sm='2'>
+            <Col sm='2' style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(key)}>
               {key}
             </Col>
-            <Col style={{cursor: 'pointer'}}>
+            <Col style={{cursor: 'pointer'}} onClick={() => viewGameHistory(key)}>
             {JSON.stringify(element, null, 2)}
             </Col>
             <Col sm='1'>
