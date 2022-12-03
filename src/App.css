@@ -42,3 +42,7 @@
     height: 100vh;
   }
 }
+
+.bordered-row:hover{
+  border: 2px solid black;
+}

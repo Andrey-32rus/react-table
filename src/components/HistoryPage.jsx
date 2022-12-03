@@ -52,7 +52,7 @@ export default function HistoryPage() {
       if (Object.hasOwnProperty.call(saves, key)) {
         const element = saves[key];
         const row = (
-          <Row key={key} className='mb-2'>
+          <Row key={key} className='mb-2 bordered-row'>
             <Col sm='2' style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(key)}>
               {key}
             </Col>
