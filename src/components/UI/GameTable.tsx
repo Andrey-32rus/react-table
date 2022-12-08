@@ -3,10 +3,20 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-export default function GameTable({ players, rows, removedRows, savedRows, changeInputText = () => { }, saveRow = () => { }, removeRow = () => { }, }) {
+interface GameTableProps{
+  players: string[],
+  rows: string[][],
+  removedRows: Set<number>,
+  savedRows: Set<number>,
+  changeInputText: (rowIndex: number, colIndex: number, text: string) => void,
+  saveRow: (index: number) => void,
+  removeRow: (index: number) => void,
+}
+
+const GameTable: React.FC<GameTableProps> = ({ players, rows, removedRows, savedRows, changeInputText, saveRow, removeRow }) => {
 
   //#region Render functions
-  const getSavedOrMinusValueElement = (rowIndex, colIndex, colValue) => {
+  const getSavedOrMinusValueElement = (rowIndex: number, colIndex: number, colValue: string) => {
     if (savedRows.has(rowIndex) === false)
       return <Form.Control type="text" value={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)} />;
     else if (removedRows.has(rowIndex))
@@ -15,7 +25,7 @@ export default function GameTable({ players, rows, removedRows, savedRows, chang
       return <Form.Control type="text" value={colValue} disabled readOnly />;
   }
 
-  const getSaveOrMinusButton = (rowIndex) => {
+  const getSaveOrMinusButton = (rowIndex: number) => {
     if (savedRows.has(rowIndex) === false)
       return <Button variant='success' onClick={() => saveRow(rowIndex)}>Save</Button>;
     else if (removedRows.has(rowIndex))
@@ -52,3 +62,5 @@ export default function GameTable({ players, rows, removedRows, savedRows, chang
     </Table>
   )
 }
+
+export default GameTable;
