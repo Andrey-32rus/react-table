@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import React from 'react';
 import ScoreTable from './components/ScoreTable';
 import InputUsersPage from './components/InputUsersPage';
 import HistoryPage from './components/HistoryPage';
