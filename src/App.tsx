@@ -4,11 +4,10 @@ import ScoreTable from './components/ScoreTable';
 import InputUsersPage from './components/InputUsersPage';
 import HistoryPage from './components/HistoryPage';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { routes } from './navigation/navigation';
 import Sidebar from './components/Sidebar';
 import GameHistoryPage from './components/GameHistoryPage';
 
-function App() {
+const App: React.FC = () => {
   return (
       <Routes>
         <Route path={'/'} element={<Sidebar />}>
