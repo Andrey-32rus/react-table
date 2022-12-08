@@ -42,7 +42,7 @@ export default function ScoreTable() {
         setSavedRows(new Set(ls.getSavedRows()));
       }
       else {
-        navigate(routes.inputUsers, { replace: true})
+         navigate('/inputUsers', { replace: true})
       }
     }
   }, [])
