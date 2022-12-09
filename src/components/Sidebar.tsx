@@ -5,9 +5,12 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-export default function Sidebar() {
+  const Sidebar: React.FC = () => {
 
-  const setActive = ({isActive}) => isActive ? 'nav-link active' : 'nav-link text-white'
+  const isActiveFunc = (props: {
+    isActive: boolean;
+    isPending: boolean;
+  }) => props.isActive ? 'nav-link active' : 'nav-link text-white'
 
   return (
     <Container fluid>
@@ -20,17 +23,17 @@ export default function Sidebar() {
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
               <li className="nav-item">
-                <NavLink to={'inputUsers'} className={setActive} aria-current="page">
+                <NavLink to={'inputUsers'} className={isActiveFunc} aria-current="page">
                   Ввод игроков
                 </NavLink>
               </li>
               <li>
-                <NavLink to={routes.scoreTable} className={setActive}>
+                <NavLink to={routes.scoreTable} className={isActiveFunc}>
                   Страница игры
                 </NavLink>
               </li>
               <li>
-                <NavLink to={'history'} className={setActive}>
+                <NavLink to={'history'} className={isActiveFunc}>
                   История игр
                 </NavLink>
               </li>
@@ -44,3 +47,5 @@ export default function Sidebar() {
     </Container>
   )
 }
+
+export default Sidebar
