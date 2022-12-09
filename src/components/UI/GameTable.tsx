@@ -4,13 +4,13 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 interface GameTableProps{
-  players: string[],
-  rows: string[][],
-  removedRows: Set<number>,
-  savedRows: Set<number>,
-  changeInputText: (rowIndex: number, colIndex: number, text: string) => void,
-  saveRow: (index: number) => void,
-  removeRow: (index: number) => void,
+  players: string[]
+  rows: string[][]
+  removedRows: Set<number>
+  savedRows: Set<number>
+  changeInputText: (rowIndex: number, colIndex: number, text: string) => void
+  saveRow: (index: number) => void
+  removeRow: (index: number) => void
 }
 
 const GameTable: React.FC<GameTableProps> = ({ players, rows, removedRows, savedRows, changeInputText, saveRow, removeRow }) => {
