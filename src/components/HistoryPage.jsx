@@ -7,13 +7,13 @@ import ls from '../store/localStorageWrapper';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 import ModalDialog from './ModalDialog';
 
 export default function HistoryPage() {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const [saves, setSaves] = useState({});
   

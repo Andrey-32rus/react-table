@@ -7,12 +7,12 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 
 const InputUsersPage: React.FC = () => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate();
 
   const [playerName, setPlayerName] = useState<string>('');

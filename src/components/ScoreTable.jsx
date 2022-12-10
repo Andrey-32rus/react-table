@@ -6,14 +6,14 @@ import Button from 'react-bootstrap/Button';
 import ls from '../store/localStorageWrapper';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 import GameTable from './UI/GameTable';
 
 export default function ScoreTable() {
 
-  const changedData = useSelector(state => state.changeScoreTable.data)
-  const dispatch = useDispatch()
+  const changedData = useAppSelector(state => state.changeScoreTable.data)
+  const dispatch = useAppDispatch()
 
   const navigate = useNavigate();
 
