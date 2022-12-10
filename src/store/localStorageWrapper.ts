@@ -28,14 +28,14 @@ const getRemovedRows = () => {
 }
 
 //потом дописать по человечески
-const saveGame = (gameName, players, rows, removedRows, savedRows) => {
+const saveGame = (gameName: string, players: string[], rows: string[][], removedRows: number[], savedRows: number[]) => {
   var data = JSON.parse(localStorage.getItem('saves') as any);
   if(data == null) data={};
   data[gameName] = { players, rows, removedRows, savedRows }
   localStorage.setItem('saves', JSON.stringify(data));
 }
 
-const deleteGameAndGetGames = (gameName) => {
+const deleteGameAndGetGames = (gameName: string) => {
   var data = JSON.parse(localStorage.getItem('saves') as any);
   if (data == null) return
   delete data[gameName]
