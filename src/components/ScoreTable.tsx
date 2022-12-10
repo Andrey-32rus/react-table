@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-
 import ls from '../store/localStorageWrapper';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
@@ -17,10 +16,10 @@ export default function ScoreTable() {
 
   const navigate = useNavigate();
 
-  const [removedRows, setRemovedRows] = useState(null);
-  const [savedRows, setSavedRows] = useState(null);
-  const [players, setPlayers] = useState([]);
-  const [rows, setRows] = useState([]);
+  const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
+  const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
+  const [players, setPlayers] = useState<string[]>([]);
+  const [rows, setRows] = useState<string[][]>([]);
 
 //#region effects
   useEffect(() => {
