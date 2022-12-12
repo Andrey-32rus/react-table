@@ -1,4 +1,6 @@
 import {Data} from '../models/Data';
+import { SaveModel } from '../models/SaveModel';
+import { ScoreTableModel } from '../models/ScoreTableModel';
 
 const key: string = 'data';
 
@@ -27,24 +29,29 @@ const getRemovedRows = () => {
   return JSON.parse(localStorage.getItem('removedRows') as string) as number[]
 }
 
-//потом дописать по человечески
 const saveGame = (gameName: string, players: string[], rows: string[][], removedRows: number[], savedRows: number[]) => {
-  var data = JSON.parse(localStorage.getItem('saves') as any);
-  if(data == null) data={};
-  data[gameName] = { players, rows, removedRows, savedRows }
+  const data = getSavedGames()
+
+  data.set(gameName, { players, rows, removedRows, savedRows })
   localStorage.setItem('saves', JSON.stringify(data));
 }
 
 const deleteGameAndGetGames = (gameName: string) => {
-  var data = JSON.parse(localStorage.getItem('saves') as any);
-  if (data == null) return
-  delete data[gameName]
+  const data = getSavedGames()
+  if (data.size == 0) return new Map<string, ScoreTableModel>
+  data.delete(gameName)
   localStorage.setItem('saves', JSON.stringify(data));
   return data
 }
 
 const getSavedGames = () => {
-  return JSON.parse(localStorage.getItem('saves') as any);
+  const json = localStorage.getItem('saves')
+  let data: Map<string, ScoreTableModel>
+  if (json)
+    data = new Map((JSON.parse(json) as SaveModel[]).map(x => [x.gameName, x.gameData]))
+  else
+    data = new Map<string, ScoreTableModel>()
+  return data
 }
 
 export default { saveData, getData, saveSavedRows, getSavedRows, saveRemovedRows, getRemovedRows, saveGame, getSavedGames, deleteGameAndGetGames };

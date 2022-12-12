@@ -10,32 +10,32 @@ import { routes } from '../navigation/navigation';
 import { useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 import ModalDialog from './ModalDialog';
+import { ScoreTableModel } from '../models/ScoreTableModel'
 
-export default function HistoryPage() {
+ const HistoryPage = () => {
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
-  const [saves, setSaves] = useState({});
-  
-  useEffect(() => {
-    setSaves(ls.getSavedGames())
-  }, [])
+  const [saves, setSaves] = useState<Map<string, ScoreTableModel>>(ls.getSavedGames());
 
-  const loadGame = (gameName) => {
+  const loadGame = (gameName: string) => {
     if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
-      dispatch(setChangedData(saves[gameName]))
-      navigate(routes.scoreTable);
+      const gameData = saves.get(gameName)
+      if(gameData) {
+        dispatch(setChangedData(gameData))
+        navigate(routes.scoreTable);
+      }
     }
   }
 
-  const deleteGame = (gameName) => {
+  const deleteGame = (gameName: string) => {
     if (window.confirm('Удаляешь. Уверен?!')) {
       var updatedSaves = ls.deleteGameAndGetGames(gameName)
       setSaves(updatedSaves)
     }
   }
 
-  const viewGameHistory = (gameName) => {
+  const viewGameHistory = (gameName: string) => {
     navigate(gameName)
   }
 
@@ -47,28 +47,25 @@ export default function HistoryPage() {
   //#endregion
 
   const renderSaves = () => {
-    let retVal = [];
-    for (const key in saves) {
-      if (Object.hasOwnProperty.call(saves, key)) {
-        const element = saves[key];
+    let retVal: JSX.Element[] = [];
+    for (const [gameName, gameData] of Array.from(saves)) {
         const row = (
-          <Row key={key} className='mb-2 bordered-row'>
-            <Col sm='2' style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(key)}>
-              {key}
+          <Row key={gameName} className='mb-2 bordered-row'>
+            <Col sm='2' style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
+              {gameName}
             </Col>
-            <Col style={{cursor: 'pointer'}} onClick={() => viewGameHistory(key)}>
-            {JSON.stringify(element, null, 2)}
-            </Col>
-            <Col sm='1'>
-              <Button variant='success' onClick={() => loadGame(key)}>load</Button>
+            <Col style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
+              {JSON.stringify(gameData, null, 2)}
             </Col>
             <Col sm='1'>
-              <Button variant='danger' onClick={() => deleteGame(key)}>delete</Button>
+              <Button variant='success' onClick={() => loadGame(gameName)}>load</Button>
+            </Col>
+            <Col sm='1'>
+              <Button variant='danger' onClick={() => deleteGame(gameName)}>delete</Button>
             </Col>
           </Row>
         )
         retVal.push(row);
-      }
     }
 
     return retVal;
@@ -97,3 +94,5 @@ export default function HistoryPage() {
     </Container>
   )
 }
+
+export default HistoryPage
