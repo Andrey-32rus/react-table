@@ -33,24 +33,33 @@ const saveGame = (gameName: string, players: string[], rows: string[][], removed
   const data = getSavedGames()
 
   data.set(gameName, { players, rows, removedRows, savedRows })
-  localStorage.setItem('saves', JSON.stringify(data));
+  writeSavesToLs(data)
 }
 
 const deleteGameAndGetGames = (gameName: string) => {
   const data = getSavedGames()
   if (data.size == 0) return new Map<string, ScoreTableModel>
   data.delete(gameName)
-  localStorage.setItem('saves', JSON.stringify(data));
+  writeSavesToLs(data)
   return data
+}
+
+const writeSavesToLs = (data: Map<string, ScoreTableModel>) => {
+  const arr: SaveModel[] = Array.from(data, ([gameName, gameData]) => { return { gameName, gameData} })
+  localStorage.setItem('saves', JSON.stringify(arr))
 }
 
 const getSavedGames = () => {
   const json = localStorage.getItem('saves')
   let data: Map<string, ScoreTableModel>
-  if (json)
-    data = new Map((JSON.parse(json) as SaveModel[]).map(x => [x.gameName, x.gameData]))
-  else
+  if (json) {
+    const savesArr = JSON.parse(json) as SaveModel[]
+    data = new Map<string, ScoreTableModel>(savesArr.map(x => [x.gameName, x.gameData]))
+  }
+  else {
     data = new Map<string, ScoreTableModel>()
+  }
+  
   return data
 }
 
