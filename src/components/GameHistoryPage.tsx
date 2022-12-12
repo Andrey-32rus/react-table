@@ -15,12 +15,13 @@ const GameHistoryPage: React.FC = () => {
 
   const saves = ls.getSavedGames()
   
-  if (gameName && !saves[gameName])
+  const gameData = saves.get(gameName)
+  if (!gameData)
     return (
       <Navigate to={'/history'}></Navigate>
     )
 
-  const { players, rows, removedRows, savedRows } = saves[gameName]
+  const { players, rows, removedRows, savedRows } = gameData
 
   return (
     <GameTable

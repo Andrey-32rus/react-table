@@ -98,7 +98,7 @@ export default function ScoreTable() {
     if(gameName == null)  return;
 
     var saves = ls.getSavedGames();
-    if (saves && saves[gameName]) {
+    if (saves.get(gameName)) {
       window.alert('C таким названием уже существует');
       return;
     }
