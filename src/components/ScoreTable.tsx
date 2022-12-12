@@ -53,12 +53,12 @@ export default function ScoreTable() {
 
   useEffect(() => {
     if (removedRows == null) return;
-    ls.saveRemovedRows([...removedRows])
+    ls.saveRemovedRows(Array.from(removedRows))
   }, [removedRows])
 
   useEffect(() => {
     if(savedRows == null) return;
-    ls.saveSavedRows([...savedRows])
+    ls.saveSavedRows(Array.from(savedRows))
   }, [savedRows])
 //#endregion
 
@@ -72,14 +72,14 @@ export default function ScoreTable() {
     setRows([...rows, arr]);
   }
 
-  const changeInputText = (rowIndex, colIndex, text) => {
+  const changeInputText = (rowIndex: number, colIndex: number, text: string) => {
     const newRows = [...rows];
     newRows[rowIndex][colIndex] = text;
 
     setRows(newRows);
   }
 
-  const removeRow = (index) => {
+  const removeRow = (index: number) => {
     if (removedRows.has(index))
       removedRows.delete(index)
     else
@@ -88,7 +88,7 @@ export default function ScoreTable() {
     setRemovedRows(new Set(removedRows));
   }
 
-  const saveRow = (index) => {
+  const saveRow = (index: number) => {
     savedRows.add(index);
     setSavedRows(new Set(savedRows));
   }
@@ -103,7 +103,7 @@ export default function ScoreTable() {
       return;
     }
 
-    ls.saveGame(gameName, players, rows, [...removedRows], [...savedRows]);
+    ls.saveGame(gameName, players, rows, Array.from(removedRows), Array.from(savedRows));
   }
 
   
