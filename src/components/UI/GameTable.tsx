@@ -3,22 +3,26 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-interface GameTableProps{
+interface GameTableProps {
   players: string[]
   rows: string[][]
   removedRows: Set<number>
   savedRows: Set<number>
-  changeInputText: (rowIndex: number, colIndex: number, text: string) => void
-  saveRow: (index: number) => void
-  removeRow: (index: number) => void
+  funcs?: GameTableFuncs
 }
 
-const GameTable: React.FC<GameTableProps> = ({ players, rows, removedRows, savedRows, changeInputText, saveRow, removeRow }) => {
+interface GameTableFuncs {
+  changeInputText: (rowIndex: number, colIndex: number, text: string) => void
+  removeRow: (index: number) => void
+  saveRow: (index: number) => void
+}
+
+const GameTable: React.FC<GameTableProps> = ({ players, rows, removedRows, savedRows, funcs }) => {
 
   //#region Render functions
   const getSavedOrMinusValueElement = (rowIndex: number, colIndex: number, colValue: string) => {
     if (savedRows.has(rowIndex) === false)
-      return <Form.Control type="text" value={colValue} onChange={e => changeInputText(rowIndex, colIndex, e.target.value)} />;
+      return <Form.Control type="text" value={colValue} onChange={e => funcs && funcs.changeInputText(rowIndex, colIndex, e.target.value)} />;
     else if (removedRows.has(rowIndex))
       return <Form.Control type="text" value='-' disabled readOnly />;
     else
@@ -27,11 +31,11 @@ const GameTable: React.FC<GameTableProps> = ({ players, rows, removedRows, saved
 
   const getSaveOrMinusButton = (rowIndex: number) => {
     if (savedRows.has(rowIndex) === false)
-      return <Button variant='success' onClick={() => saveRow(rowIndex)}>Save</Button>;
+      return <Button variant='success' onClick={() => funcs && funcs.saveRow(rowIndex)}>Save</Button>;
     else if (removedRows.has(rowIndex))
-      return <Button variant='secondary' onClick={() => removeRow(rowIndex)}>Show</Button>;
+      return <Button variant='secondary' onClick={() => funcs && funcs.removeRow(rowIndex)}>Show</Button>;
     else
-      return <Button variant='danger' onClick={() => removeRow(rowIndex)}>Hide</Button>;
+      return <Button variant='danger' onClick={() => funcs && funcs.removeRow(rowIndex)}>Hide</Button>;
   }
   //#endregion
 
@@ -51,11 +55,11 @@ const GameTable: React.FC<GameTableProps> = ({ players, rows, removedRows, saved
               <td key={'col' + rIndex + cIndex}>
                 {getSavedOrMinusValueElement(rIndex, cIndex, col)}
               </td>
-            ))
-            }
-            <td>
-              {getSaveOrMinusButton(rIndex)}
-            </td>
+            ))}
+            {funcs &&
+              <td>
+                {getSaveOrMinusButton(rIndex)}
+              </td>}
           </tr>
         ))}
       </tbody>

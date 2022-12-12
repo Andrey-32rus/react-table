@@ -29,9 +29,6 @@ const GameHistoryPage: React.FC = () => {
       rows={rows}
       removedRows={new Set(removedRows)}
       savedRows={new Set(savedRows)}
-      changeInputText = {() => {}}
-      removeRow={() => { }}
-      saveRow={() => { }}
     />
   )
 }

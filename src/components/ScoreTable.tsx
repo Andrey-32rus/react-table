@@ -102,8 +102,6 @@ export default function ScoreTable() {
     ls.saveGame(gameName, players, rows, Array.from(removedRows), Array.from(savedRows));
   }
 
-  
-
   return (
     <Container fluid>
       <h3 className='mb-2'>Таблица игры</h3>
@@ -112,9 +110,11 @@ export default function ScoreTable() {
         rows={rows}
         removedRows={removedRows}
         savedRows={savedRows}
-        changeInputText={changeInputText}
-        removeRow={removeRow}
-        saveRow={saveRow}
+        funcs={{ 
+          changeInputText: changeInputText,
+          removeRow: removeRow,
+          saveRow: saveRow,
+        }}
       />
       <div>
         <div>
