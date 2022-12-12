@@ -18,7 +18,7 @@ const saveSavedRows = (savedRows: number[]) => {
 }
 
 const getSavedRows = () => {
-  return JSON.parse(localStorage.getItem('savedRows') as string);
+  return JSON.parse(localStorage.getItem('savedRows') as string) as number[];
 }
 
 const saveRemovedRows = (removedRows: number[]) => {

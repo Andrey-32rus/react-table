@@ -29,6 +29,9 @@ export default function ScoreTable() {
       setRemovedRows(new Set(changedData.removedRows));
       setSavedRows(new Set(changedData.savedRows));
 
+      ls.saveRemovedRows(Array.from(changedData.removedRows))
+      ls.saveSavedRows(Array.from(changedData.savedRows))
+
       dispatch(setChangedData(null))
     }
     else {
@@ -51,15 +54,6 @@ export default function ScoreTable() {
     ls.saveData(players, rows)
   }, [players, rows])
 
-  useEffect(() => {
-    if (removedRows == null) return;
-    ls.saveRemovedRows(Array.from(removedRows))
-  }, [removedRows])
-
-  useEffect(() => {
-    if(savedRows == null) return;
-    ls.saveSavedRows(Array.from(savedRows))
-  }, [savedRows])
 //#endregion
 
   const addRow = () => {
@@ -86,11 +80,13 @@ export default function ScoreTable() {
       removedRows.add(index);
 
     setRemovedRows(new Set(removedRows));
+    ls.saveRemovedRows(Array.from(removedRows))
   }
 
   const saveRow = (index: number) => {
     savedRows.add(index);
     setSavedRows(new Set(savedRows));
+    ls.saveSavedRows(Array.from(savedRows))
   }
 
   const saveGame = () => {
