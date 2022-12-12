@@ -41,7 +41,7 @@ export default function ScoreTable() {
         setSavedRows(new Set(ls.getSavedRows()));
       }
       else {
-        navigate(routes.inputUsers, { replace: true})
+         navigate('/inputUsers', { replace: true})
       }
     }
   }, [])
@@ -98,7 +98,7 @@ export default function ScoreTable() {
     if(gameName == null)  return;
 
     var saves = ls.getSavedGames();
-    if (saves[gameName]) {
+    if (saves && saves[gameName]) {
       window.alert('C таким названием уже существует');
       return;
     }
