@@ -1,10 +1,12 @@
 import React from 'react'
 import ls from '../store/localStorageWrapper';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import GameTable from './UI/GameTable';
+import { Button } from 'react-bootstrap';
 
 const GameHistoryPage: React.FC = () => {
 
+  const navigate = useNavigate();
   const params =  useParams();
   if(!params.gameName) {
     return (
@@ -23,13 +25,20 @@ const GameHistoryPage: React.FC = () => {
 
   const { players, rows, removedRows, savedRows } = gameData
 
+  const routeToHistory = () => {
+    navigate('/history')
+  }
+
   return (
-    <GameTable
-      players={players}
-      rows={rows}
-      removedRows={new Set(removedRows)}
-      savedRows={new Set(savedRows)}
-    />
+    <>
+      <Button className='mb-3' onClick={routeToHistory}>{'<---'}</Button>
+      <GameTable
+        players={players}
+        rows={rows}
+        removedRows={new Set(removedRows)}
+        savedRows={new Set(savedRows)}
+      />
+    </>
   )
 }
 
