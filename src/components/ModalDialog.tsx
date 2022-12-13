@@ -1,8 +1,7 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Modal, { ModalProps } from 'react-bootstrap/Modal';
 
-export default function ModalDialog({ children, ...props}) {
+const ModalDialog: React.FC<ModalProps> = ({ children, ...props}) => {
 
   return (
     <Modal
@@ -20,3 +19,5 @@ export default function ModalDialog({ children, ...props}) {
     </Modal>
   )
 }
+
+export default ModalDialog

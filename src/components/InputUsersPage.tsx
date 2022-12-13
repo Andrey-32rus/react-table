@@ -7,22 +7,22 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 
-export default function InputUsersPage() {
+const InputUsersPage: React.FC = () => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate();
 
-  const [playerName, setPlayerName] = useState('');
-  const [players, setPlayers] = useState([]);
+  const [playerName, setPlayerName] = useState<string>('');
+  const [players, setPlayers] = useState<string[]>([]);
 
-  const changePlayerName = text => {
+  const changePlayerName = (text: string) => {
     setPlayerName(text);
   }
 
-  const removePlayer = i => {
+  const removePlayer = (i: number) => {
     let newPlayers = [...players];
     newPlayers.splice(i, 1);
     setPlayers(newPlayers);
@@ -77,3 +77,5 @@ export default function InputUsersPage() {
     </>
   )
 }
+
+export default InputUsersPage

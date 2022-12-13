@@ -3,18 +3,25 @@ import ls from '../store/localStorageWrapper';
 import { Navigate, useParams } from 'react-router-dom';
 import GameTable from './UI/GameTable';
 
-export default function GameHistoryPage() {
+const GameHistoryPage: React.FC = () => {
 
-  const {gameName} = useParams()
+  const params =  useParams();
+  if(!params.gameName) {
+    return (
+      <Navigate to={'/history'}></Navigate>
+    )
+  }
+  const gameName: string = params.gameName
 
   const saves = ls.getSavedGames()
   
-  if (!saves[gameName])
+  const gameData = saves.get(gameName)
+  if (!gameData)
     return (
       <Navigate to={'/history'}></Navigate>
     )
 
-  const { players, rows, removedRows, savedRows } = saves[gameName]
+  const { players, rows, removedRows, savedRows } = gameData
 
   return (
     <GameTable
@@ -25,3 +32,5 @@ export default function GameHistoryPage() {
     />
   )
 }
+
+export default GameHistoryPage;

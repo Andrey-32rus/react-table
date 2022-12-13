@@ -2,25 +2,24 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-
 import ls from '../store/localStorageWrapper';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 import GameTable from './UI/GameTable';
 
 export default function ScoreTable() {
 
-  const changedData = useSelector(state => state.changeScoreTable.data)
-  const dispatch = useDispatch()
+  const changedData = useAppSelector(state => state.changeScoreTable.data)
+  const dispatch = useAppDispatch()
 
   const navigate = useNavigate();
 
-  const [removedRows, setRemovedRows] = useState(null);
-  const [savedRows, setSavedRows] = useState(null);
-  const [players, setPlayers] = useState([]);
-  const [rows, setRows] = useState([]);
+  const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
+  const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
+  const [players, setPlayers] = useState<string[]>([]);
+  const [rows, setRows] = useState<string[][]>([]);
 
 //#region effects
   useEffect(() => {
@@ -29,6 +28,9 @@ export default function ScoreTable() {
       setRows(changedData.rows);
       setRemovedRows(new Set(changedData.removedRows));
       setSavedRows(new Set(changedData.savedRows));
+
+      ls.saveRemovedRows(Array.from(changedData.removedRows))
+      ls.saveSavedRows(Array.from(changedData.savedRows))
 
       dispatch(setChangedData(null))
     }
@@ -52,15 +54,6 @@ export default function ScoreTable() {
     ls.saveData(players, rows)
   }, [players, rows])
 
-  useEffect(() => {
-    if (removedRows == null) return;
-    ls.saveRemovedRows([...removedRows])
-  }, [removedRows])
-
-  useEffect(() => {
-    if(savedRows == null) return;
-    ls.saveSavedRows([...savedRows])
-  }, [savedRows])
 //#endregion
 
   const addRow = () => {
@@ -73,25 +66,27 @@ export default function ScoreTable() {
     setRows([...rows, arr]);
   }
 
-  const changeInputText = (rowIndex, colIndex, text) => {
+  const changeInputText = (rowIndex: number, colIndex: number, text: string) => {
     const newRows = [...rows];
     newRows[rowIndex][colIndex] = text;
 
     setRows(newRows);
   }
 
-  const removeRow = (index) => {
+  const removeRow = (index: number) => {
     if (removedRows.has(index))
       removedRows.delete(index)
     else
       removedRows.add(index);
 
     setRemovedRows(new Set(removedRows));
+    ls.saveRemovedRows(Array.from(removedRows))
   }
 
-  const saveRow = (index) => {
+  const saveRow = (index: number) => {
     savedRows.add(index);
     setSavedRows(new Set(savedRows));
+    ls.saveSavedRows(Array.from(savedRows))
   }
 
   const saveGame = () => {
@@ -99,15 +94,13 @@ export default function ScoreTable() {
     if(gameName == null)  return;
 
     var saves = ls.getSavedGames();
-    if (saves && saves[gameName]) {
+    if (saves.get(gameName)) {
       window.alert('C таким названием уже существует');
       return;
     }
 
-    ls.saveGame(gameName, players, rows, [...removedRows], [...savedRows]);
+    ls.saveGame(gameName, players, rows, Array.from(removedRows), Array.from(savedRows));
   }
-
-  
 
   return (
     <Container fluid>
@@ -117,9 +110,11 @@ export default function ScoreTable() {
         rows={rows}
         removedRows={removedRows}
         savedRows={savedRows}
-        changeInputText={changeInputText}
-        removeRow={removeRow}
-        saveRow={saveRow}
+        funcs={{ 
+          changeInputText: changeInputText,
+          removeRow: removeRow,
+          saveRow: saveRow,
+        }}
       />
       <div>
         <div>
