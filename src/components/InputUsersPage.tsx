@@ -30,7 +30,7 @@ const InputUsersPage: React.FC = () => {
 
   const savePlayer = () => {
     if (playerName === '') return;
-    if (players.length >= 4) return;
+    if (players.length >= 10) return;
 
     let newPlayers = [...players];
     newPlayers.push(playerName);
@@ -39,7 +39,7 @@ const InputUsersPage: React.FC = () => {
   }
 
   const startGame = () => {
-    if(players.length < 3)
+    if(players.length < 1)
       return;
     if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
       dispatch(setChangedData({ players, rows: [], removedRows: [], savedRows: [] }))
@@ -61,7 +61,7 @@ const InputUsersPage: React.FC = () => {
             </Col>
           </Row>
         ))}
-        {players.length < 4
+        {players.length < 10
           &&
           <Row className='mt-4'>
             <Col sm='8' xs='8'>
