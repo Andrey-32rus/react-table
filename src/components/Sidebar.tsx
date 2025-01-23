@@ -40,18 +40,18 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               <hr />
               <ul className="nav nav-pills flex-column mb-auto">
                 <li className="nav-item">
-                  <Link href="/score" className={isActive('/score')}>
-                    Score
-                  </Link>
                 </li>
                 <li>
                   <Link href="/inputUsers" className={isActive('/inputUsers')}>
-                    Input Users
+                    Ввод игроков
                   </Link>
                 </li>
+                <Link href="/score" className={isActive('/score')}>
+                  Таблица игры
+                </Link>
                 <li>
                   <Link href="/history" className={isActive('/history')}>
-                    History
+                    История
                   </Link>
                 </li>
               </ul>
