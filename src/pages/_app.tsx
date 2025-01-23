@@ -1,4 +1,4 @@
-// src/pages/_app.tsx
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/App.css'; // Импортируйте глобальные стили здесь
 import '../styles/index.css';
 import {AppProps} from "next/app";
