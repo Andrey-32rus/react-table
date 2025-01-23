@@ -1,16 +1,7 @@
-// src/pages/index.tsx
-import React, { useEffect } from 'react';
-
-import ScoreTable from "../components/ScoreTable";
+import React from 'react';
 
 const IndexPage: React.FC = () => {
-    useEffect(() => {
-        // Этот код будет выполнен только на клиенте
-    }, []);
-
-    return (
-        <ScoreTable />
-    );
+    return null;
 };
 
 export default IndexPage;
