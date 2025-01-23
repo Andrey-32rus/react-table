@@ -3,18 +3,17 @@ import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import ls from '../store/localStorageWrapper';
-import { useNavigate } from 'react-router-dom';
-import { routes } from '../navigation/navigation';
 import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 import GameTable from './UI/GameTable';
+import {useRouter} from "next/router";
 
 export default function ScoreTable() {
 
   const changedData = useAppSelector(state => state.changeScoreTable.data)
   const dispatch = useAppDispatch()
 
-  const navigate = useNavigate();
+  const router = useRouter(); // Инициализируем useRouter
 
   const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
   const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
@@ -44,7 +43,7 @@ export default function ScoreTable() {
         setSavedRows(new Set(ls.getSavedRows()));
       }
       else {
-         navigate('/inputUsers', { replace: true})
+        router.replace('/inputUsers')
       }
     }
   }, [])

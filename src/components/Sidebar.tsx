@@ -1,11 +1,13 @@
-import React from 'react'
-import { NavLink, Outlet } from 'react-router-dom';
-import { routes } from '../navigation/navigation';
+import React, { ReactNode } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-  const Sidebar: React.FC = () => {
+interface SidebarProps {
+  children: ReactNode;  // Типизируем children как ReactNode
+}
+
+  const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   const isActiveFunc = (props: {
     isActive: boolean;
@@ -23,25 +25,19 @@ import Col from 'react-bootstrap/Col'
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
               <li className="nav-item">
-                <NavLink to={'inputUsers'} className={isActiveFunc} aria-current="page">
-                  Ввод игроков
-                </NavLink>
+                <a  href="/score">Score</a>
               </li>
               <li>
-                <NavLink to={routes.scoreTable} className={isActiveFunc}>
-                  Страница игры
-                </NavLink>
+                <a href="/inputUsers">Input Users</a>
               </li>
               <li>
-                <NavLink to={'history'} className={isActiveFunc}>
-                  История игр
-                </NavLink>
+                <a href="/history">History</a>
               </li>
             </ul>
           </div>
         </Col>
         <Col className='pt-3'>
-          <Outlet />
+          <div className="content">{children}</div> {/* Содержимое */}
         </Col>
       </Row>
     </Container>

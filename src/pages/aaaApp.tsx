@@ -7,7 +7,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import GameHistoryPage from '../components/GameHistoryPage';
 
-const App: React.FC = () => {
+const AaaApp: React.FC = () => {
   return (
       <Routes>
         <Route path={'/'} element={<Sidebar />}>
@@ -23,4 +23,4 @@ const App: React.FC = () => {
   );
 }
 
-export default App;
+export default AaaApp;
