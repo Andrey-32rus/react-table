@@ -4,16 +4,13 @@ import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import GameTable from './UI/GameTable';
 import { Button } from 'react-bootstrap';
 
-const GameHistoryPage: React.FC = () => {
+interface GameHistoryPageProps {
+  gameName: string;
+}
+
+const GameHistoryPage: React.FC<GameHistoryPageProps> = ({ gameName }) => {
 
   const navigate = useNavigate();
-  const params =  useParams();
-  if(!params.gameName) {
-    return (
-      <Navigate to={'/history'}></Navigate>
-    )
-  }
-  const gameName: string = params.gameName
 
   const saves = ls.getSavedGames()
   
