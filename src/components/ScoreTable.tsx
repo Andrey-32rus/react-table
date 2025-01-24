@@ -24,7 +24,11 @@ const ScoreTable = () => {
       setSavedRows(new Set(gameData.savedRows));
     }
   }, [gameData]);
-  
+
+  useEffect(() => {
+
+  }, [removedRows, savedRows, players, rows]);
+
   const addRow = () => {
     if (savedRows.size !== rows.length) {
       alert('Есть несохранённая строка! Нельзя добавить больше одной несохранённой строки. Сохраните последнюю, потом добавляйте новую пустую');
@@ -56,6 +60,19 @@ const ScoreTable = () => {
 
     setSavedRows(new Set(savedRows));
   }
+
+  const autoSave = () => {
+    if (players.length > 0 && rows.length > 0) {
+      const gameData = {
+        players,
+        rows,
+        [...removedRows],
+        [...savedRows]
+      };
+
+      dispatch(saveGame(gameData));
+    }
+  };
 
   const saveGameHandler = () => {
     const gameName = window.prompt('Введите название сохранения игры');
