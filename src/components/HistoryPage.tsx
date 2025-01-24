@@ -6,7 +6,6 @@ import { Button } from 'react-bootstrap';
 import ls from '../store/localStorageWrapper';
 import { routes } from '../navigation/navigation';
 import { useAppDispatch } from '../store/hooks';
-import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice';
 import ModalDialog from './ModalDialog';
 import { ScoreTableModel } from '../models/ScoreTableModel';
 import { useRouter } from 'next/router';
