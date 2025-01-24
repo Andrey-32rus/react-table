@@ -5,13 +5,24 @@ import path from 'path';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
-      const filePath = path.resolve(`saves.json`);
+      // Определяем путь к JSON-файлу
+      const filePath = path.resolve('saves.json');
 
-      fs.writeFileSync(filePath, JSON.stringify(gameData));  // Сохраняем в файл
+      // Проверяем, существует ли файл
+      if (!fs.existsSync(filePath)) {
+        return res.status(200).json('{}');
+      }
 
-      return res.status(200).json({ message: 'Game saved successfully' });
+      // Читаем содержимое файла
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+      // Парсим JSON-данные
+      const games = JSON.parse(fileContent);
+
+      return res.status(200).json({ games });
     } catch (error) {
-      return res.status(500).json({ error: 'Failed to save game' });
+      console.error('Error reading saves file:', error);
+      return res.status(500).json({ error: 'Failed to read saves file' });
     }
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
