@@ -1,4 +1,4 @@
-import React, {JSX, useState} from 'react';
+import React, {JSX, useEffect, useState} from 'react';
 import {useAppDispatch} from "../store/hooks";
 import {useRouter} from "next/router";
 import {ScoreTableModel} from "../models/ScoreTableModel";
@@ -11,30 +11,31 @@ import ModalDialog from "../components/ModalDialog";
 import {GetServerSideProps} from "next";
 import path from "path";
 import fs from "fs";
+import GameTable from "../components/UI/GameTable";
 
-export const getServerSideProps: GetServerSideProps<{ gameData: Save[] | null }> = async () => {
+export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async () => {
     try {
-        const filePath = path.resolve('current.json');
+        const filePath = path.resolve('saves.json');
 
         if (!fs.existsSync(filePath)) {
             return {
                 props: {
-                    gameData: null,
+                    saves: null,
                 },
             };
         }
 
-        const gameData: Save[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        const saves: Save[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         return {
             props: {
-                gameData, // Возвращаем объект с `gameData`
+                saves, // Возвращаем объект с `gameData`
             },
         };
     } catch (error) {
         console.error('Error reading game data:', error);
         return {
             props: {
-                gameData: null, // В случае ошибки возвращаем объект с `gameData: null`
+                saves: null, // В случае ошибки возвращаем объект с `gameData: null`
             },
         };
     }
@@ -45,62 +46,77 @@ type Save = {
     data : ScoreTableModel,
 }
 
-
 interface Props {
     saves: Save[] | null;
 }
 
-const HistoryPage = () => {
+const HistoryPage : React.FC<Props> = ({ saves }) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const [saves, setSaves] = useState<Map<string, ScoreTableModel>>(ls.getSavedGames());
+    const [game, setGame] = useState<ScoreTableModel | null>(null);
 
-    const loadGame = (gameName: string) => {
-        if (window.confirm('Результаты старой игры удалятся. Уверен?!')) {
-            const gameData = saves.get(gameName);
-            if (gameData) {
-                dispatch(setChangedData(gameData));
-                router.push(routes.scoreTable);
+    // const loadGame = (gameName: string) => {
+    //     if (window.confirm('Результаты старой игры удалятся. Уверен?!')) {
+    //         const gameData = saves.get(gameName);
+    //         if (gameData) {
+    //             dispatch(setChangedData(gameData));
+    //             router.push(routes.scoreTable);
+    //         }
+    //     }
+    // };
+    //
+    // const deleteGame = (gameName: string) => {
+    //     if (window.confirm('Удаляешь. Уверен?!')) {
+    //         const updatedSaves = ls.deleteGameAndGetGames(gameName);
+    //         setSaves(updatedSaves);
+    //     }
+    // };
+
+    const backToHistory = () => {
+        setGame(null)
+    };
+
+    const viewGameHistory = (gameName: string) => {
+        if(!saves)
+            return
+
+        for (const save of saves) {
+            if(save.name === gameName){
+                setGame(save.data)
             }
         }
     };
 
-    const deleteGame = (gameName: string) => {
-        if (window.confirm('Удаляешь. Уверен?!')) {
-            const updatedSaves = ls.deleteGameAndGetGames(gameName);
-            setSaves(updatedSaves);
-        }
-    };
-
-    const viewGameHistory = (gameName: string) => {
-        router.push(`/history/${gameName}`);
-    };
-
     //#region POPUP
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const [show, setShow] = useState(false);
+    //
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
     //#endregion
 
     const renderSaves = () => {
         const rows: JSX.Element[] = [];
-        for (const [gameName, gameData] of Array.from(saves)) {
+
+        if (!saves)
+            return rows
+
+        for (const save of saves) {
+            const { name, data } = save;
             const row = (
-              <Row key={gameName} className="mb-2 bordered-row">
-                  <Col sm="2" style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
-                      {gameName}
+              <Row key={name} className="mb-2 bordered-row">
+                  <Col sm="2" style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(name)}>
+                      {name}
                   </Col>
-                  <Col style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
-                      {JSON.stringify(gameData, null, 2)}
+                  <Col style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(name)}>
+                      {JSON.stringify(data, null, 2)}
                   </Col>
                   <Col sm="1">
-                      <Button variant="success" onClick={() => loadGame(gameName)}>
+                      <Button variant="success" >
                           load
                       </Button>
                   </Col>
                   <Col sm="1">
-                      <Button variant="danger" onClick={() => deleteGame(gameName)}>
+                      <Button variant="danger" >
                           delete
                       </Button>
                   </Col>
@@ -113,23 +129,36 @@ const HistoryPage = () => {
 
     return (
       <Container fluid>
-          {renderSaves()}
-          <ModalDialog show={show} onHide={handleClose}>
-              {{
-                  title: 'title',
-                  body: 'body',
-                  footer: (
-                    <>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={handleClose}>
-                            Save Changes
-                        </Button>
-                    </>
-                  ),
-              }}
-          </ModalDialog>
+          {game &&
+            <>
+                <Button className="mb-3" onClick={backToHistory}>
+                    {'<---'}
+                </Button>
+                <GameTable
+                  players={game.players}
+                  rows={game.rows}
+                  removedRows={new Set(game.removedRows)}
+                  savedRows={new Set(game.savedRows)}
+                />
+            </>
+          }
+          {!game && renderSaves()}
+          {/*<ModalDialog show={show} onHide={handleClose}>*/}
+          {/*    {{*/}
+          {/*        title: 'title',*/}
+          {/*        body: 'body',*/}
+          {/*        footer: (*/}
+          {/*          <>*/}
+          {/*              <Button variant="secondary" onClick={handleClose}>*/}
+          {/*                  Close*/}
+          {/*              </Button>*/}
+          {/*              <Button variant="primary" onClick={handleClose}>*/}
+          {/*                  Save Changes*/}
+          {/*              </Button>*/}
+          {/*          </>*/}
+          {/*        ),*/}
+          {/*    }}*/}
+          {/*</ModalDialog>*/}
       </Container>
     );
 };
