@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {GetServerSideProps} from "next";
 import path from "path";
@@ -5,9 +6,9 @@ import fs from "fs";
 import {ScoreTableModel} from "../models/ScoreTableModel";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {router} from "next/client";
-import {saveGame} from "../store/slices/gameSlice";
 import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
+import {saveGame} from "../store/slices/gameSlice";
 
 export const getServerSideProps: GetServerSideProps<{ gameData: ScoreTableModel | null }> = async () => {
     try {
@@ -42,6 +43,11 @@ interface Props {
     gameData: ScoreTableModel | null;
 }
 
+type Save = {
+    name: string;
+    data: ScoreTableModel;
+};
+
 const ScorePage: React.FC<Props> = (props) => {
     const dispatch = useAppDispatch();
 
@@ -55,10 +61,10 @@ const ScorePage: React.FC<Props> = (props) => {
     const [rows, setRows] = useState<string[][]>([]);
 
     useEffect(() => {
-        if(!gameData && !props.gameData) {
+        if (!gameData && !props.gameData) {
             router.replace('/inputUsers')
         }
-        if(!gameData && props.gameData) {
+        if (!gameData && props.gameData) {
             setPlayers(props.gameData.players);
             setRows(props.gameData.rows);
             setRemovedRows(new Set(props.gameData.removedRows));
@@ -78,7 +84,7 @@ const ScorePage: React.FC<Props> = (props) => {
     useEffect(() => {
         if (players.length > 0 && rows.length > 0) {
 
-            const currentData : ScoreTableModel = {
+            const currentData: ScoreTableModel = {
                 players,
                 rows,
                 removedRows: Array.from(removedRows),
@@ -131,44 +137,62 @@ const ScorePage: React.FC<Props> = (props) => {
     }
 
 
-    const saveGameHandler = () => {
-        const gameName = window.prompt('Введите название сохранения игры');
-        if (gameName && players.length > 0 && rows.length > 0) {
-            const gameData = {
-                players,
-                rows,
-                removedRows: [],
-                savedRows: [],
-            };
-
-            dispatch(saveGame(gameData));
-        }
+    type Save = {
+        name: string;
+        data: ScoreTableModel;
     };
 
-    return (
-      <Container fluid>
-          <h3 className='mb-2'>Таблица игры</h3>
-          <GameTable
-            players={players}
-            rows={rows}
-            removedRows={removedRows}
-            savedRows={savedRows}
-            funcs={{
-                changeInputText: changeInputText,
-                removeRow: removeRow,
-                saveRow: saveRow,
-            }}
-          />
-          <div>
+    const saveGameHandler = async () => {
+        const gameName = window.prompt('Введите название сохранения игры');
+        if (gameName && players.length > 0 && rows.length > 0) {
+            try {
+
+                const save : Save = {
+                    name: gameName,
+                    data:  {
+                        players,
+                        rows,
+                        removedRows: Array.from(removedRows),
+                        savedRows: Array.from(savedRows),
+                    }
+                }
+
+                const response = await axios.put('/api/saves', save);
+
+                if (response.status === 200) {
+                    console.log('Game saved successfully');
+                } else {
+                    console.log('Failed to save game');
+                }
+            } catch (error) {
+                console.error('Error saving game:', error);
+            }
+        }
+    }
+        return (
+          <Container fluid>
+              <h3 className='mb-2'>Таблица игры</h3>
+              <GameTable
+                players={players}
+                rows={rows}
+                removedRows={removedRows}
+                savedRows={savedRows}
+                funcs={{
+                    changeInputText: changeInputText,
+                    removeRow: removeRow,
+                    saveRow: saveRow,
+                }}
+              />
               <div>
-                  <Button variant="primary" onClick={addRow}>+</Button>
+                  <div>
+                      <Button variant="primary" onClick={addRow}>+</Button>
+                  </div>
+                  <div className='d-flex flex-row-reverse mt-2'>
+                      <Button variant="success" onClick={saveGameHandler}>save game</Button>
+                  </div>
               </div>
-              <div className='d-flex flex-row-reverse mt-2'>
-                  <Button variant="success" onClick={saveGameHandler}>save game</Button>
-              </div>
-          </div>
-      </Container>
-    )
-}
+          </Container>
+        )
+    }
 
 export default ScorePage;
