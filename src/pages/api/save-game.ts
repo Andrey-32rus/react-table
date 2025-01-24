@@ -1,17 +1,12 @@
-// pages/api/save-game.ts
-
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import fs from 'fs';
+import path from 'path';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { players, rows, removedRows, savedRows } = req.body;
 
-    // Логика для сохранения игры (например, сохраняем в файл или базу данных)
-    // Пример с сохранением в файл:
     try {
-      const fs = require('fs');
-      const path = require('path');
-
       const filePath = path.resolve('games', `${Date.now()}.json`);
       const gameData = { players, rows, removedRows, savedRows };
 

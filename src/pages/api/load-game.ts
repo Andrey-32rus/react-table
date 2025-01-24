@@ -1,16 +1,12 @@
-// pages/api/load-game.ts
-
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import fs from 'fs';
+import path from 'path';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     const { name } = req.query;
 
     try {
-      const fs = require('fs');
-      const path = require('path');
-
-      // Пример загрузки игры из файла
       const filePath = path.resolve('games', `${name}.json`);
 
       if (!fs.existsSync(filePath)) {
