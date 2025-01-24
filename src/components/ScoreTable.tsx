@@ -3,6 +3,7 @@ import { Button, Container } from 'react-bootstrap';
 import { saveGame, loadGame } from '../store/slices/gameSlice';
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import GameTable from "./UI/GameTable";
+import {ScoreTableModel} from "../models/ScoreTableModel";
 
 const ScoreTable = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +27,20 @@ const ScoreTable = () => {
   }, [gameData]);
 
   useEffect(() => {
+    if (players.length > 0 && rows.length > 0) {
 
+      const currentData : ScoreTableModel = {
+        players,
+        rows,
+        removedRows: Array.from(removedRows),
+        savedRows: Array.from(savedRows),
+      };
+
+      if (JSON.stringify(gameData) !== JSON.stringify(currentData)) {
+        dispatch(saveGame(currentData));
+      }
+      
+    }
   }, [removedRows, savedRows, players, rows]);
 
   const addRow = () => {
@@ -61,18 +75,6 @@ const ScoreTable = () => {
     setSavedRows(new Set(savedRows));
   }
 
-  const autoSave = () => {
-    if (players.length > 0 && rows.length > 0) {
-      const gameData = {
-        players,
-        rows,
-        [...removedRows],
-        [...savedRows]
-      };
-
-      dispatch(saveGame(gameData));
-    }
-  };
 
   const saveGameHandler = () => {
     const gameName = window.prompt('Введите название сохранения игры');
