@@ -39,26 +39,6 @@ export const saveGame = createAsyncThunk(
   }
 );
 
-export const loadGame = createAsyncThunk(
-  'game/loadGame',
-  async (gameName: string, { rejectWithValue }) => {
-    try {
-      const response = await fetch(`/api/load-game?name=${gameName}`, {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to load game');
-      }
-
-      const gameData = await response.json();
-      return gameData;
-    } catch (error) {
-      return rejectWithValue('Error loading game');
-    }
-  }
-);
-
 const gameSlice = createSlice({
   name: 'game',
   initialState,
@@ -82,20 +62,6 @@ const gameSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
-      // loadGame
-      .addCase(loadGame.pending, (state) => {
-        state.loading = true;
-        state.error = null;  // Сбрасываем ошибку при начале запроса
-      })
-      .addCase(loadGame.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(loadGame.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
   },
 });
 

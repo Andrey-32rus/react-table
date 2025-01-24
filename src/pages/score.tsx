@@ -5,7 +5,7 @@ import fs from "fs";
 import {ScoreTableModel} from "../models/ScoreTableModel";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {router} from "next/client";
-import {loadGame, saveGame} from "../store/slices/gameSlice";
+import {saveGame} from "../store/slices/gameSlice";
 import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
 
@@ -143,10 +143,6 @@ const ScorePage: React.FC<Props> = (props) => {
 
             dispatch(saveGame(gameData));
         }
-    };
-
-    const loadGameHandler = (gameName: string) => {
-        dispatch(loadGame(gameName));
     };
 
     return (
