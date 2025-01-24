@@ -5,15 +5,15 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
 import { routes } from '../navigation/navigation';
 import { useAppDispatch } from '../store/hooks'
 import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
+import {useRouter} from "next/router";
 
 const InputUsersPage: React.FC = () => {
 
   const dispatch = useAppDispatch()
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [playerName, setPlayerName] = useState<string>('');
   const [players, setPlayers] = useState<string[]>([]);
@@ -43,7 +43,7 @@ const InputUsersPage: React.FC = () => {
       return;
     if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
       dispatch(setChangedData({ players, rows: [], removedRows: [], savedRows: [] }))
-      navigate(routes.scoreTable);
+      router.push(routes.scoreTable)
     }
   }
 
