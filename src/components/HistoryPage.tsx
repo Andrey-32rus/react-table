@@ -1,45 +1,43 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import ls from '../store/localStorageWrapper';
+import React, { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import ls from '../store/localStorageWrapper';
 import { routes } from '../navigation/navigation';
-import { useAppDispatch } from '../store/hooks'
-import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
+import { useAppDispatch } from '../store/hooks';
+import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice';
 import ModalDialog from './ModalDialog';
-import { ScoreTableModel } from '../models/ScoreTableModel'
+import { ScoreTableModel } from '../models/ScoreTableModel';
+import { useRouter } from 'next/router';
 
- const HistoryPage = () => {
-
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate();
+const HistoryPage = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [saves, setSaves] = useState<Map<string, ScoreTableModel>>(ls.getSavedGames());
 
   const loadGame = (gameName: string) => {
-    if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
-      const gameData = saves.get(gameName)
-      if(gameData) {
-        dispatch(setChangedData(gameData))
-        navigate(routes.scoreTable);
+    if (window.confirm('Результаты старой игры удалятся. Уверен?!')) {
+      const gameData = saves.get(gameName);
+      if (gameData) {
+        dispatch(setChangedData(gameData));
+        router.push(routes.scoreTable);
       }
     }
-  }
+  };
 
   const deleteGame = (gameName: string) => {
     if (window.confirm('Удаляешь. Уверен?!')) {
-      var updatedSaves = ls.deleteGameAndGetGames(gameName)
-      setSaves(updatedSaves)
+      const updatedSaves = ls.deleteGameAndGetGames(gameName);
+      setSaves(updatedSaves);
     }
-  }
+  };
 
   const viewGameHistory = (gameName: string) => {
-    navigate(gameName)
-  }
+    router.push(`/history/${gameName}`);
+  };
 
-  //#region POPUS
+  //#region POPUP
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -47,52 +45,54 @@ import { ScoreTableModel } from '../models/ScoreTableModel'
   //#endregion
 
   const renderSaves = () => {
-    let retVal: JSX.Element[] = [];
+    const rows: JSX.Element[] = [];
     for (const [gameName, gameData] of Array.from(saves)) {
-        const row = (
-          <Row key={gameName} className='mb-2 bordered-row'>
-            <Col sm='2' style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
-              {gameName}
-            </Col>
-            <Col style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
-              {JSON.stringify(gameData, null, 2)}
-            </Col>
-            <Col sm='1'>
-              <Button variant='success' onClick={() => loadGame(gameName)}>load</Button>
-            </Col>
-            <Col sm='1'>
-              <Button variant='danger' onClick={() => deleteGame(gameName)}>delete</Button>
-            </Col>
-          </Row>
-        )
-        retVal.push(row);
+      const row = (
+        <Row key={gameName} className="mb-2 bordered-row">
+          <Col sm="2" style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
+            {gameName}
+          </Col>
+          <Col style={{ cursor: 'pointer' }} onClick={() => viewGameHistory(gameName)}>
+            {JSON.stringify(gameData, null, 2)}
+          </Col>
+          <Col sm="1">
+            <Button variant="success" onClick={() => loadGame(gameName)}>
+              load
+            </Button>
+          </Col>
+          <Col sm="1">
+            <Button variant="danger" onClick={() => deleteGame(gameName)}>
+              delete
+            </Button>
+          </Col>
+        </Row>
+      );
+      rows.push(row);
     }
-
-    return retVal;
-  }
+    return rows;
+  };
 
   return (
     <Container fluid>
       {renderSaves()}
-      <ModalDialog 
-        show={show}
-        onHide={handleClose}>
-          {{
+      <ModalDialog show={show} onHide={handleClose}>
+        {{
           title: 'title',
           body: 'body',
-          footer: 
-          <>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </>
-          }}
+          footer: (
+            <>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Save Changes
+              </Button>
+            </>
+          ),
+        }}
       </ModalDialog>
     </Container>
-  )
-}
+  );
+};
 
-export default HistoryPage
+export default HistoryPage;
