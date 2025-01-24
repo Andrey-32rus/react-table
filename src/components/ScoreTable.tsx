@@ -4,6 +4,7 @@ import { saveGame, loadGame } from '../store/slices/gameSlice';
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import GameTable from "./UI/GameTable";
 import {ScoreTableModel} from "../models/ScoreTableModel";
+import {router} from "next/client";
 
 interface Props {
   gameData: ScoreTableModel | null;
@@ -20,6 +21,18 @@ const ScoreTable: React.FC<Props> = (props) => {
   const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
   const [players, setPlayers] = useState<string[]>([]);
   const [rows, setRows] = useState<string[][]>([]);
+
+  useEffect(() => {
+    if(!gameData && !props.gameData) {
+      router.replace('/inputUsers')
+    }
+    if(!gameData && props.gameData) {
+      setPlayers(props.gameData.players);
+      setRows(props.gameData.rows);
+      setRemovedRows(new Set(props.gameData.removedRows));
+      setSavedRows(new Set(props.gameData.savedRows));
+    }
+  }, []);
 
   useEffect(() => {
     if (gameData) {
