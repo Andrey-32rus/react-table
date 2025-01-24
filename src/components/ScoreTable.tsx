@@ -54,11 +54,17 @@ const ScoreTable = () => {
   }
 
   const changeInputText = (rowIndex: number, colIndex: number, text: string) => {
-    const newRows = [...rows];
-    newRows[rowIndex][colIndex] = text;
+    const newRows = rows.map((row, index) => {
+      if (index === rowIndex) {
+        const newRow = [...row];
+        newRow[colIndex] = text;
+        return newRow;
+      }
+      return row;
+    });
 
-    setRows(newRows);
-  }
+    setRows(newRows);  // Обновляем состояние с новым массивом
+  };
 
   const removeRow = (index: number) => {
     if (removedRows.has(index))
