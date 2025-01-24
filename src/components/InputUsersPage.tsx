@@ -7,8 +7,8 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { routes } from '../navigation/navigation';
 import { useAppDispatch } from '../store/hooks'
-import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
 import {useRouter} from "next/router";
+import {setGameData} from "../store/slices/gameSlice";
 
 const InputUsersPage: React.FC = () => {
 
@@ -42,7 +42,7 @@ const InputUsersPage: React.FC = () => {
     if(players.length < 1)
       return;
     if (window.confirm('Результаты старой игры удаляться. Уверен?!')) {
-      dispatch(setChangedData({ players, rows: [], removedRows: [], savedRows: [] }))
+      dispatch(setGameData({ players, rows: [], removedRows: [], savedRows: [] }))
       router.push(routes.scoreTable)
     }
   }
