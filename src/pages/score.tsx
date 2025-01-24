@@ -90,7 +90,7 @@ const ScorePage: React.FC<Props> = (props) => {
             }
 
         }
-    }, [removedRows, savedRows, players, rows]);
+    }, [removedRows, savedRows]);
 
     const addRow = () => {
         if (savedRows.size !== rows.length) {
