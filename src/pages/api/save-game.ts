@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { players, rows, removedRows, savedRows } = req.body;
 
     try {
-      const filePath = path.resolve('games', `${Date.now()}.json`);
+      const filePath = path.resolve(`current.json`);
       const gameData = { players, rows, removedRows, savedRows };
 
       fs.writeFileSync(filePath, JSON.stringify(gameData));  // Сохраняем в файл
