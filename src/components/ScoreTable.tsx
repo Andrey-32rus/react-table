@@ -1,128 +1,61 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import ls from '../store/localStorageWrapper';
-import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { setChangedData } from '../store/changeScoreTable/changeScoreTableSlice'
-import GameTable from './UI/GameTable';
-import {useRouter} from "next/router";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Button, Container } from 'react-bootstrap';
+import { saveGame, loadGame } from '../store/slices/gameSlice';
+import {useAppDispatch, useAppSelector} from "../store/hooks";
 
-export default function ScoreTable() {
+const ScoreTable = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const changedData = useAppSelector(state => state.changeScoreTable.data)
-  const dispatch = useAppDispatch()
+  const gameData = useAppSelector((state) => state.game.data);
+  const loading = useAppSelector((state) => state.game.loading);
+  const error = useAppSelector((state) => state.game.error);
 
-  const router = useRouter(); // Инициализируем useRouter
-
-  const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
-  const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
   const [players, setPlayers] = useState<string[]>([]);
   const [rows, setRows] = useState<string[][]>([]);
 
-//#region effects
   useEffect(() => {
-    if (changedData) {
-      setPlayers(changedData.players);
-      setRows(changedData.rows);
-      setRemovedRows(new Set(changedData.removedRows));
-      setSavedRows(new Set(changedData.savedRows));
-
-      ls.saveRemovedRows(Array.from(changedData.removedRows))
-      ls.saveSavedRows(Array.from(changedData.savedRows))
-
-      dispatch(setChangedData(null))
+    if (gameData) {
+      setPlayers(gameData.players);
+      setRows(gameData.rows);
     }
-    else {
-      const lsData = ls.getData();
+  }, [gameData]);
 
-      if (lsData) {
-        setPlayers(lsData.players);
-        setRows(lsData.rows);
-        setRemovedRows(new Set(ls.getRemovedRows()));
-        setSavedRows(new Set(ls.getSavedRows()));
-      }
-      else {
-        router.replace('/inputUsers')
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    if(players.length == 0) return;
-    ls.saveData(players, rows)
-  }, [players, rows])
-
-//#endregion
-
-  const addRow = () => {
-    if (savedRows.size !== rows.length) {
-      alert('Есть несохранённая строка! Нельзя добавить больше одной несохранённой строки. Сохраните последнюю, потом добавляйте новую пустую');
-      return;
-    }
-
-    let arr = players.map(p => '');
-    setRows([...rows, arr]);
-  }
-
-  const changeInputText = (rowIndex: number, colIndex: number, text: string) => {
-    const newRows = [...rows];
-    newRows[rowIndex][colIndex] = text;
-
-    setRows(newRows);
-  }
-
-  const removeRow = (index: number) => {
-    if (removedRows.has(index))
-      removedRows.delete(index)
-    else
-      removedRows.add(index);
-
-    setRemovedRows(new Set(removedRows));
-    ls.saveRemovedRows(Array.from(removedRows))
-  }
-
-  const saveRow = (index: number) => {
-    savedRows.add(index);
-    setSavedRows(new Set(savedRows));
-    ls.saveSavedRows(Array.from(savedRows))
-  }
-
-  const saveGame = () => {
+  const saveGameHandler = () => {
     const gameName = window.prompt('Введите название сохранения игры');
-    if(gameName == null)  return;
+    if (gameName && players.length > 0 && rows.length > 0) {
+      const gameData = {
+        players,
+        rows,
+        removedRows: [],
+        savedRows: [],
+      };
 
-    var saves = ls.getSavedGames();
-    if (saves.get(gameName)) {
-      window.alert('C таким названием уже существует');
-      return;
+      dispatch(saveGame(gameData));
     }
+  };
 
-    ls.saveGame(gameName, players, rows, Array.from(removedRows), Array.from(savedRows));
-  }
+  const loadGameHandler = (gameName: string) => {
+    dispatch(loadGame(gameName));
+  };
 
   return (
     <Container fluid>
-      <h3 className='mb-2'>Таблица игры</h3>
-      <GameTable
-        players={players}
-        rows={rows}
-        removedRows={removedRows}
-        savedRows={savedRows}
-        funcs={{ 
-          changeInputText: changeInputText,
-          removeRow: removeRow,
-          saveRow: saveRow,
-        }}
-      />
+      <h3 className="mb-2">Таблица игры</h3>
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error}</div>}
       <div>
-        <div>
-          <Button variant="primary" onClick={addRow}>+</Button>
-        </div>
-        <div className='d-flex flex-row-reverse mt-2'>
-          <Button variant="success" onClick={saveGame}>save game</Button>
-        </div>
+        <Button variant="primary" onClick={saveGameHandler}>
+          Save Game
+        </Button>
+        <Button variant="secondary" onClick={() => loadGameHandler('gameName')}>
+          Load Game
+        </Button>
       </div>
+      {/* Отображение таблицы */}
     </Container>
-  )
-}
+  );
+};
+
+export default ScoreTable;
