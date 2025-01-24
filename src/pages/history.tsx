@@ -1,4 +1,4 @@
-import React, {JSX, useEffect, useState} from 'react';
+import React, {JSX, useState} from 'react';
 import {useAppDispatch} from "../store/hooks";
 import {useRouter} from "next/router";
 import {ScoreTableModel} from "../models/ScoreTableModel";
@@ -7,11 +7,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import ModalDialog from "../components/ModalDialog";
 import {GetServerSideProps} from "next";
 import path from "path";
 import fs from "fs";
 import GameTable from "../components/UI/GameTable";
+import {saveGame} from "../store/slices/gameSlice";
 
 export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async () => {
     try {
@@ -55,15 +55,22 @@ const HistoryPage : React.FC<Props> = ({ saves }) => {
     const router = useRouter();
     const [game, setGame] = useState<ScoreTableModel | null>(null);
 
-    // const loadGame = (gameName: string) => {
-    //     if (window.confirm('Результаты старой игры удалятся. Уверен?!')) {
-    //         const gameData = saves.get(gameName);
-    //         if (gameData) {
-    //             dispatch(setChangedData(gameData));
-    //             router.push(routes.scoreTable);
-    //         }
-    //     }
-    // };
+    const loadGame = async (gameName: string) => {
+        if(!saves)
+            return
+
+        if (window.confirm('Результаты старой игры удалятся. Уверен?!')) {
+
+            for (const save of saves) {
+                if(save.name === gameName) {
+                    await dispatch(saveGame(save.data))
+                    router.push(routes.scoreTable);
+                }
+            }
+        }
+    }
+
+
     //
     // const deleteGame = (gameName: string) => {
     //     if (window.confirm('Удаляешь. Уверен?!')) {
@@ -111,7 +118,7 @@ const HistoryPage : React.FC<Props> = ({ saves }) => {
                       {JSON.stringify(data, null, 2)}
                   </Col>
                   <Col sm="1">
-                      <Button variant="success" >
+                      <Button variant="success" onClick={() => loadGame(name)}>
                           load
                       </Button>
                   </Col>
