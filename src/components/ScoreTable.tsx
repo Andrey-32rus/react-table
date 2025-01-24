@@ -5,7 +5,11 @@ import {useAppDispatch, useAppSelector} from "../store/hooks";
 import GameTable from "./UI/GameTable";
 import {ScoreTableModel} from "../models/ScoreTableModel";
 
-const ScoreTable = () => {
+interface Props {
+  gameData: ScoreTableModel | null;
+}
+
+const ScoreTable: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
 
   const gameData = useAppSelector((state) => state.game.data);

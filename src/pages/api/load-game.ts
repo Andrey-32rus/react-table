@@ -4,10 +4,8 @@ import path from 'path';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    const { name } = req.query;
-
     try {
-      const filePath = path.resolve('games', `${name}.json`);
+      const filePath = path.resolve(`current.json`);
 
       if (!fs.existsSync(filePath)) {
         return res.status(404).json({ error: 'Game not found' });
