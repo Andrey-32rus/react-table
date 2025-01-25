@@ -12,8 +12,20 @@ import path from "path";
 import fs from "fs";
 import GameTable from "../components/UI/GameTable";
 import {saveGame} from "../store/slices/gameSlice";
+import {getSession} from "next-auth/react";
 
-export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async () => {
+export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async (context) => {
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: "/auth/signin",
+                permanent: false,
+            },
+        };
+    }
+
     try {
         const filePath = path.resolve('saves.json');
 

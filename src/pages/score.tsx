@@ -9,8 +9,20 @@ import {router} from "next/client";
 import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
 import {saveGame} from "../store/slices/gameSlice";
+import {getSession} from "next-auth/react";
 
-export const getServerSideProps: GetServerSideProps<{ gameData: ScoreTableModel | null }> = async () => {
+export const getServerSideProps: GetServerSideProps<{ gameData: ScoreTableModel | null }> = async (context) => {
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: "/auth/signin",
+                permanent: false,
+            },
+        };
+    }
+
     try {
         const filePath = path.resolve('current.json');
 
