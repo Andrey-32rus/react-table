@@ -16,11 +16,14 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="p-6 bg-white rounded shadow-md">
-        <h1 className="mb-4 text-xl font-bold">Sign In</h1>
+    <div className="flex items-center justify-center min-h-screen bg-light">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full sm:w-96 p-5 bg-white rounded-lg shadow-lg border border-gray-200"
+      >
+        <h1 className="mb-4 text-2xl font-semibold text-center">Sign In</h1>
         <div className="mb-4">
-          <label htmlFor="username" className="block mb-1 font-medium">
+          <label htmlFor="username" className="form-label">
             Username
           </label>
           <input
@@ -28,11 +31,11 @@ const SignIn = () => {
             id="username"
             name="username"
             required
-            className="w-full p-2 border rounded"
+            className="form-control"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="password" className="block mb-1 font-medium">
+          <label htmlFor="password" className="form-label">
             Password
           </label>
           <input
@@ -40,12 +43,12 @@ const SignIn = () => {
             id="password"
             name="password"
             required
-            className="w-full p-2 border rounded"
+            className="form-control"
           />
         </div>
         <button
           type="submit"
-          className="w-full py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-600"
+          className="btn btn-primary w-100 py-3 font-bold text-white rounded-lg"
         >
           Sign In
         </button>
