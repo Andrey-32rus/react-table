@@ -14,7 +14,7 @@ export default NextAuth({
           id: "1",
           name: "admin",
           username: "admin",
-          password: "admin123",
+          password: "admin123admin123admin123",
         };
 
         if (
