@@ -15,9 +15,9 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   }, []);
 
   return (
-    <Container fluid>
-      <Row>
-        <Col sm="auto" xs="auto" xl="auto" className="background-color-graphite px-1">
+    <Container fluid className="h-100">
+      <Row className="h-100">
+        <Col sm="auto" xs="auto" xl="auto" className="h-100 background-color-graphite px-1">
           <button
             className="sidebar-toggle btn btn-primary mb-3"
             type="button"
