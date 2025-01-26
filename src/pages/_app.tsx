@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/App.css';
 import '../styles/index.css';
-import '../styles/Sidebar.css';
 import {AppProps} from "next/app";
 import Sidebar from "../components/Sidebar";
 import store from "../store/store";

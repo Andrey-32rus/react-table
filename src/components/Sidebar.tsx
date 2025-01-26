@@ -10,69 +10,58 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
-  const router = useRouter();
-  const [currentPath, setCurrentPath] = useState<string>('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true); // Состояние для открытия/закрытия сайдбара
+  const router = useRouter(); // Доступ к маршрутам
+
+  const [currentPath, setCurrentPath] = useState<string>(''); // Текущее местоположение
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // Устанавливаем текущий путь на клиентской стороне
       setCurrentPath(router.pathname);
     }
-  }, [router.pathname]);
+  }, [router.pathname]); // Обновляем, если путь изменился
 
   const isActive = (href: string) => {
     return currentPath === href ? 'nav-link active' : 'nav-link text-white';
-  };
+  }
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Переключение состояния сайдбара
-  };
 
   return (
-    <Container fluid>
-      <Row>
-        {/* Сайдбар с анимацией */}
-        <Col
-          sm="3"
-          xs="12"
-          xl="2"
-          className={`px-0 sidebar ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}
-        >
-          <div className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark vh-sm-100">
-            <a
-              className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
-              href="/"
-            >
-              <span className="fs-4">Игровая таблица</span>
-            </a>
-            <hr />
-            <ul className="nav nav-pills flex-column mb-auto">
-              <li>
-                <Link href="/inputUsers" className={isActive('/inputUsers')}>
-                  Ввод игроков
-                </Link>
-              </li>
-              <li>
+      <Container fluid>
+        <Row>
+          <Col sm="3" xs="12" xl="2" className="px-0">
+            <div className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark vh-sm-100">
+              <a
+                  className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+                  href="/"
+              >
+                <span className="fs-4">Игровая таблица</span>
+              </a>
+              <hr />
+              <ul className="nav nav-pills flex-column mb-auto">
+                <li className="nav-item">
+                </li>
+                <li>
+                  <Link href="/inputUsers" className={isActive('/inputUsers')}>
+                    Ввод игроков
+                  </Link>
+                </li>
                 <Link href="/score" className={isActive('/score')}>
                   Таблица игры
                 </Link>
-              </li>
-              <li>
-                <Link href="/history" className={isActive('/history')}>
-                  История
-                </Link>
-              </li>
-            </ul>
-            <button className="btn btn-light mt-4" onClick={toggleSidebar}>
-              {isSidebarOpen ? 'Скрыть' : 'Показать'}
-            </button>
-          </div>
-        </Col>
-        <Col className="pt-3">
-          <div className="content">{children}</div>
-        </Col>
-      </Row>
-    </Container>
+                <li>
+                  <Link href="/history" className={isActive('/history')}>
+                    История
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </Col>
+          <Col className="pt-3">
+            <div className="content">{children}</div> {/* Содержимое */}
+          </Col>
+        </Row>
+      </Container>
   );
 };
 
