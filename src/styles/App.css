@@ -46,3 +46,32 @@
 .bordered-row:hover{
   border: 2px solid black;
 }
+
+.background-color-graphite {
+  background-color: #343a40;
+}
+
+/* Кнопка "бургер-меню" */
+.sidebar-toggle {
+  background-color: #343a40;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.sidebar-toggle:hover {
+  background-color: #495057;
+}
+
+/* Линии кнопки */
+.burger-line {
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  margin: 3px 0;
+}

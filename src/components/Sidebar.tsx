@@ -1,4 +1,7 @@
 import React, { ReactNode, useEffect } from 'react';
+import {Container} from "react-bootstrap";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 interface SidebarProps {
   children: ReactNode;
@@ -12,17 +15,27 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   }, []);
 
   return (
-    <div>
+    <Container fluid>
+      <Row>
+        <Col sm="auto" xs="auto" xl="auto" className="background-color-graphite px-1">
+          <button
+            className="sidebar-toggle btn btn-primary mb-3"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasWithBothOptions"
+            aria-controls="offcanvasWithBothOptions"
+          >
+            <div className="burger-line"></div>
+            <div className="burger-line"></div>
+            <div className="burger-line"></div>
+          </button>
+        </Col>
+        <Col>
+          <div className="content">{children}</div> {/* Содержимое */}
+        </Col>
+      </Row>
       {/* Кнопка для открытия сайдбара */}
-      <button
-        className="btn btn-primary mb-3"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasWithBothOptions"
-        aria-controls="offcanvasWithBothOptions"
-      >
-        Открыть сайдбар
-      </button>
+
 
       {/* Сайдбар */}
       <div
@@ -35,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
       >
         <div className="offcanvas-header">
           <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">
-            Меню
+            Игровая таблица
           </h5>
           <button
             type="button"
@@ -45,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <p>Это содержимое сайдбара.</p>
+          <p>Выберите страницу</p>
           <ul className="nav flex-column">
             <li className="nav-item">
               <a href="/inputUsers" className="nav-link">
@@ -65,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           </ul>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
