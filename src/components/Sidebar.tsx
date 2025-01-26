@@ -1,7 +1,9 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {Container} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import {useRouter} from "next/router";
+import Link from "next/link";
 
 interface SidebarProps {
   children: ReactNode;
@@ -13,6 +15,21 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     // @ts-ignore
     import("bootstrap/dist/js/bootstrap.bundle.min.js")
   }, []);
+
+  const router = useRouter(); // Доступ к маршрутам
+
+  const [currentPath, setCurrentPath] = useState<string>(''); // Текущее местоположение
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Устанавливаем текущий путь на клиентской стороне
+      setCurrentPath(router.pathname);
+    }
+  }, [router.pathname]); // Обновляем, если путь изменился
+
+  const isActive = (href: string) => {
+    return currentPath === href ? 'nav-link active' : 'nav-link text-black';
+  }
 
   return (
     <Container fluid className="h-100">
@@ -61,19 +78,19 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           <p>Выберите страницу</p>
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a href="/inputUsers" className="nav-link">
+              <Link href="/inputUsers" className={isActive('/inputUsers')}>
                 Ввод игроков
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/score" className="nav-link">
+              <Link href="/score" className={isActive('/score')}>
                 Таблица игры
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/history" className="nav-link">
+              <Link href="/history" className={isActive('/history')}>
                 История
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
