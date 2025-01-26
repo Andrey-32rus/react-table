@@ -85,3 +85,10 @@ html, body {
   background-color: #fff;
   margin: 3px 0;
 }
+
+/* Медиазапрос для уменьшения ширины сайдбара на мобильных устройствах */
+@media (max-width: 768px) {
+  .offcanvas-start {
+    width: 280px !important; /* Уменьшаем ширину сайдбара на мобильных */
+  }
+}
