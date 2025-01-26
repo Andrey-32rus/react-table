@@ -92,3 +92,18 @@ html, body {
     width: 280px !important; /* Уменьшаем ширину сайдбара на мобильных */
   }
 }
+
+.btn-close {
+  filter: invert(1) !important; /* Инвертирует цвета, делает крестик белым */
+  color: white !important; /* Устанавливает цвет крестика в белый */
+  background-color: transparent !important; /* Убирает фон кнопки */
+}
+
+.btn-close:hover {
+  color: white !important; /* Крестик остается белым при наведении */
+  background-color: transparent !important; /* Без фона при наведении */
+}
+
+.nav-item:hover .nav-link {
+  color: lightgrey !important; /* Цвет текста при наведении */
+}

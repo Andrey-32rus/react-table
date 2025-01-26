@@ -28,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   }, [router.pathname]); // Обновляем, если путь изменился
 
   const isActive = (href: string) => {
-    return currentPath === href ? 'nav-link active' : 'nav-link text-black';
+    return currentPath === href ? 'nav-link active' : 'nav-link text-white';
   }
 
   return (
@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
       {/* Сайдбар */}
       <div
-        className="offcanvas offcanvas-start"
+        className="offcanvas offcanvas-start text-bg-dark"
         data-bs-scroll="true"
         data-bs-backdrop="true"
         tabIndex={-1}
