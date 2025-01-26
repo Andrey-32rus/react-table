@@ -1,67 +1,71 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import React, { ReactNode, useEffect } from 'react';
 
 interface SidebarProps {
   children: ReactNode;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
-  const router = useRouter(); // Доступ к маршрутам
-
-  const [currentPath, setCurrentPath] = useState<string>(''); // Текущее местоположение
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Устанавливаем текущий путь на клиентской стороне
-      setCurrentPath(router.pathname);
-    }
-  }, [router.pathname]); // Обновляем, если путь изменился
-
-  const isActive = (href: string) => {
-    return currentPath === href ? 'nav-link active' : 'nav-link text-white';
-  }
-
+    // @ts-ignore
+    import("bootstrap/dist/js/bootstrap.bundle.min.js")
+  }, []);
 
   return (
-      <Container fluid>
-        <Row>
-          <Col sm="3" xs="12" xl="2" className="px-0">
-            <div className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark vh-sm-100">
-              <a
-                  className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
-                  href="/"
-              >
-                <span className="fs-4">Игровая таблица</span>
+    <div>
+      {/* Кнопка для открытия сайдбара */}
+      <button
+        className="btn btn-primary mb-3"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasWithBothOptions"
+        aria-controls="offcanvasWithBothOptions"
+      >
+        Открыть сайдбар
+      </button>
+
+      {/* Сайдбар */}
+      <div
+        className="offcanvas offcanvas-start"
+        data-bs-scroll="true"
+        data-bs-backdrop="true"
+        tabIndex={-1}
+        id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel"
+      >
+        <div className="offcanvas-header">
+          <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">
+            Меню
+          </h5>
+          <button
+            type="button"
+            className="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Закрыть"
+          ></button>
+        </div>
+        <div className="offcanvas-body">
+          <p>Это содержимое сайдбара.</p>
+          <ul className="nav flex-column">
+            <li className="nav-item">
+              <a href="/inputUsers" className="nav-link">
+                Ввод игроков
               </a>
-              <hr />
-              <ul className="nav nav-pills flex-column mb-auto">
-                <li className="nav-item">
-                </li>
-                <li>
-                  <Link href="/inputUsers" className={isActive('/inputUsers')}>
-                    Ввод игроков
-                  </Link>
-                </li>
-                <Link href="/score" className={isActive('/score')}>
-                  Таблица игры
-                </Link>
-                <li>
-                  <Link href="/history" className={isActive('/history')}>
-                    История
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </Col>
-          <Col className="pt-3">
-            <div className="content">{children}</div> {/* Содержимое */}
-          </Col>
-        </Row>
-      </Container>
+            </li>
+            <li className="nav-item">
+              <a href="/score" className="nav-link">
+                Таблица игры
+              </a>
+            </li>
+            <li className="nav-item">
+              <a href="/history" className="nav-link">
+                История
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 };
 
