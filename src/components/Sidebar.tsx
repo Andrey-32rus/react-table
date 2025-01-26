@@ -76,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         </div>
         <div className="offcanvas-body">
           <p>Выберите страницу</p>
-          <ul className="nav flex-column">
+          <ul className="nav nav-pills flex-column mb-auto">
             <li className="nav-item">
               <Link href="/inputUsers" className={isActive('/inputUsers')}>
                 Ввод игроков
