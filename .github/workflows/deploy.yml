@@ -10,34 +10,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '22'  # Убедитесь, что версия Node.js соответствует вашей
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'  # Убедитесь, что версия Node.js соответствует вашей
 
-    - name: Install dependencies
-      run: |
-        npm install --production
+      - name: Install dependencies
+        run: |
+          npm install --production
 
-    - name: Build the app
-      run: |
-        npm run build
+      - name: Build the app
+        run: |
+          npm run build
 
-    - name: Deploy to server
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER_IP: ${{ secrets.SERVER_IP }}
-        USER: ${{ secrets.USER }}
-      run: |
-        echo "$SSH_PRIVATE_KEY" > private_key.pem
-        chmod 600 private_key.pem
-        ssh -p 22220 -o StrictHostKeyChecking=no -i private_key.pem $USER@$SERVER_IP << 'EOF'
-          cd /var/react-table
-          git pull origin master  # Пулл последних изменений (если используете git на сервере)
-          npm install --production           # Установка зависимостей
-          npm run build         # Сборка проекта
-          pm2 restart react-table  # Перезапуск приложения через pm2 (если используется pm2)
-        EOF
+      - name: Deploy to server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          USER: ${{ secrets.USER }}
+        run: |
+          # Подготовка SSH ключа
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts  # Добавляем github в список доверенных хостов
+          
+          # Подключение по SSH и деплой
+          ssh -i private_key.pem -p 22220 $USER@$SERVER_IP << 'EOF'
+            cd /var/react-table
+          
+            # Выполнение git pull с проверкой на ошибку
+            git pull origin master || { echo 'Git pull failed: Permission denied (publickey)'; exit 1; }
+          
+            npm install --production           # Установка зависимостей
+            npm run build         # Сборка проекта
+            pm2 restart react-table  # Перезапуск приложения через pm2 (если используется pm2)
+          EOF
