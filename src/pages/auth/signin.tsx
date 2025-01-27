@@ -26,19 +26,34 @@ const SignIn = () => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    // Получаем текущий протокол, домен и порт
-    const protocol = typeof window !== "undefined" && window.location.protocol === "https:" ? "https" : "http";
-    const hostname = typeof window !== "undefined" ? window.location.hostname : "localhost";
-    const port = typeof window !== "undefined" ? window.location.port : "8081";  // Используем 8081 по умолчанию для серверов
+    // Динамическое вычисление callbackUrl
+    const getCallbackUrl = () => {
+      if (typeof window !== "undefined") {
+        // Если код выполняется на клиенте (в браузере)
+        const { protocol, host, port } = window.location;
 
-    // Формируем callbackUrl
-    const callbackUrl = `${protocol}://${hostname}:${port}`;
+        console.log("Client-side:");
+        console.log("protocol:", protocol);
+        console.log("host:", host);
+        console.log("port:", port);
+
+        // Если порт задан, включаем его в URL
+        return port
+          ? `${protocol}//${host}:${port}` // Пример: http://localhost:3000
+          : `${protocol}//${host}`; // Пример: http://localhost
+      }
+      return "/"; // На сервере fallback
+    };
+
+    const callbackUrl = getCallbackUrl();
+
+    console.log("callbackUrl:", callbackUrl);
 
     await signIn("credentials", {
       username,
       password,
       redirect: true,
-      callbackUrl,
+      callbackUrl, // Используем динамически вычисленный URL
     });
   };
 

@@ -29,10 +29,38 @@ export default NextAuth({
     }),
   ],
   pages: {
-    signIn: "/auth/signin", // Можно кастомизировать страницу входа
+    signIn: "/auth/signin", // Кастомизированная страница входа
   },
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET || "your-secret",
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Логирование для отслеживания callback
+      if (typeof window === "undefined") {
+        // Серверная часть, обрабатываем запрос
+        const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+        const host = baseUrl.split("//")[1]; // host (с удалением протокола)
+        const port = host.split(":")[1] || "80"; // Если порт есть, возьмем его
+
+        console.log("Server-side redirect callback:");
+        console.log("protocol:", protocol);
+        console.log("host:", host);
+        console.log("port:", port);
+
+        const callbackUrl = `${protocol}://${host}:${port}`;
+
+        console.log("callbackUrl:", callbackUrl);
+
+        return callbackUrl; // Возвращаем правильный callbackUrl
+      }
+
+      // На клиенте продолжаем с обычным редиректом
+      console.log("Client-side redirect callback:");
+      console.log("url:", url);
+      console.log("baseUrl:", baseUrl);
+      return url.startsWith(baseUrl) ? url : baseUrl;
+    },
+  },
 });
