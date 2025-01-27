@@ -32,12 +32,10 @@ jobs:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           USER: ${{ secrets.USER }}
         run: |
-          # Подготовка SSH ключа
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
           
-          # Подключение по SSH и деплой
-          ssh -i private_key.pem -p 22220 $USER@$SERVER_IP << 'EOF'
+          ssh -p 22220 -o StrictHostKeyChecking=no -i private_key.pem $USER@$SERVER_IP << 'EOF'
             cd /var/react-table
           
             eval "$(ssh-agent -s)"
@@ -46,8 +44,8 @@ jobs:
             # Выполнение git pull с проверкой на ошибку
             git pull origin master || { echo 'Git pull failed: Permission denied (publickey)'; exit 1; }
           
-            npm install --production  # Установка зависимостей
-            rm -rf .next  # Удаляем старые файлы из .next
+            npm install --production
+            rm -rf .next  
           EOF
 
       - name: Copy build artifacts to server
@@ -69,7 +67,6 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
           
-          # Перезапуск приложения через pm2
-          ssh -i private_key.pem -p 22220 $USER@$SERVER_IP << 'EOF'
+          ssh -p 22220 -o StrictHostKeyChecking=no -i private_key.pem $USER@$SERVER_IP << 'EOF'
             pm2 restart react-table  # Перезапуск приложения
           EOF
