@@ -26,11 +26,19 @@ const SignIn = () => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
+    // Получаем текущий протокол, домен и порт
+    const protocol = typeof window !== "undefined" && window.location.protocol === "https:" ? "https" : "http";
+    const hostname = typeof window !== "undefined" ? window.location.hostname : "localhost";
+    const port = typeof window !== "undefined" ? window.location.port : "8081";  // Используем 8081 по умолчанию для серверов
+
+    // Формируем callbackUrl
+    const callbackUrl = `${protocol}://${hostname}:${port}`;
+
     await signIn("credentials", {
       username,
       password,
       redirect: true,
-      callbackUrl: "/",
+      callbackUrl,
     });
   };
 
