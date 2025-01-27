@@ -36,7 +36,9 @@ jobs:
         chmod 600 private_key.pem
         ssh -p 22220 -o StrictHostKeyChecking=no -i private_key.pem $USER@$SERVER_IP << 'EOF'
           cd /var/react-table
-          git pull origin master  # Пулл последних изменений (если используете git на сервере)
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsaserv
+          git pull origin master || { echo 'Git pull failed: Permission denied (publickey)'; exit 1; }
           npm install --production           # Установка зависимостей
           npm run build         # Сборка проекта
           pm2 restart react-table  # Перезапуск приложения через pm2 (если используется pm2)
