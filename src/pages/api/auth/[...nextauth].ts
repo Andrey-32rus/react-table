@@ -56,6 +56,7 @@ export default NextAuth({
         return callbackUrl; // Возвращаем правильный callbackUrl
       }
 
+
       // На клиенте продолжаем с обычным редиректом
       console.log("Client-side redirect callback:");
       console.log("url:", url);
