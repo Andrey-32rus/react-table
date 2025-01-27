@@ -13,8 +13,8 @@ const nextConfig = {
     },
 
     webpack(config, { isServer, dev }) {
-        if (!isServer && !dev) {  // Обфускация только на client-side и в production
-            const JavaScriptObfuscator = require('webpack-obfuscator');
+        if (!isServer && !dev) {
+            // Обфускация только для client-side и только в production
             config.plugins.push(
                 new JavaScriptObfuscator(
                     {
