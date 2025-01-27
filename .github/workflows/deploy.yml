@@ -35,7 +35,7 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
         ssh -p 22220 -o StrictHostKeyChecking=no -i private_key.pem $USER@$SERVER_IP << 'EOF'
-          cd /путь/к/проекту
+          cd /var/react-table
           git pull origin master  # Пулл последних изменений (если используете git на сервере)
           npm install --production           # Установка зависимостей
           npm run build         # Сборка проекта
