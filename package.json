@@ -47,6 +47,8 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-redux": "^7.1.34",
-    "typescript": "^4.9.5"
+    "javascript-obfuscator": "^4.1.1",
+    "typescript": "^4.9.5",
+    "webpack-obfuscator": "^3.5.1"
   }
 }
