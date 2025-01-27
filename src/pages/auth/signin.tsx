@@ -26,34 +26,9 @@ const SignIn = () => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    // Динамическое вычисление callbackUrl
-    const getCallbackUrl = () => {
-      if (typeof window !== "undefined") {
-        // Если код выполняется на клиенте (в браузере)
-        const { protocol, host, port } = window.location;
-
-        console.log("Client-side:");
-        console.log("protocol:", protocol);
-        console.log("host:", host);
-        console.log("port:", port);
-
-        // Если порт задан, включаем его в URL
-        return port
-          ? `${protocol}//${host}:${port}` // Пример: http://localhost:3000
-          : `${protocol}//${host}`; // Пример: http://localhost
-      }
-      return "/"; // На сервере fallback
-    };
-
-    const callbackUrl = getCallbackUrl();
-
-    console.log("callbackUrl:", callbackUrl);
-
     await signIn("credentials", {
       username,
       password,
-      redirect: true,
-      callbackUrl, // Используем динамически вычисленный URL
     });
   };
 
