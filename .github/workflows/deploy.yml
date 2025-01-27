@@ -35,7 +35,12 @@ jobs:
           # Подготовка SSH ключа
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts  # Добавляем github в список доверенных хостов
+          
+          # Убедимся, что каталог ~/.ssh существует
+          mkdir -p ~/.ssh
+          
+          # Добавление GitHub в список доверенных хостов
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
           
           # Подключение по SSH и деплой
           ssh -i private_key.pem -p 22220 $USER@$SERVER_IP << 'EOF'
