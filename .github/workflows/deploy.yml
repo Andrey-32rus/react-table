@@ -39,5 +39,5 @@ jobs:
           git pull origin master  # Пулл последних изменений (если используете git на сервере)
           npm install --production           # Установка зависимостей
           npm run build         # Сборка проекта
-          pm2 restart next-app  # Перезапуск приложения через pm2 (если используется pm2)
+          pm2 restart react-table  # Перезапуск приложения через pm2 (если используется pm2)
         EOF
