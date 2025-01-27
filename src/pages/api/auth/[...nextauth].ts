@@ -17,7 +17,6 @@ export default NextAuth({
           password: "admin123admin123admin123",
         };
 
-
         if (
           credentials?.username === hardcodedUser.username &&
           credentials?.password === hardcodedUser.password
