@@ -25,6 +25,7 @@ jobs:
     - name: Build the app
       run: |
         npm run build
+        ls -la
 
     - name: Deploy to server
       env:
