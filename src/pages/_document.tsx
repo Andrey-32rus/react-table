@@ -5,24 +5,24 @@ class MyDocument extends Document {
     return (
       <Html lang="ru">
         <Head>
-          <link rel="manifest" href="/manifest.json"/>
+          <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+          <link rel="shortcut icon" href="/favicon.ico"/>
+          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+          <meta name="apple-mobile-web-app-title" content="React Table"/>
+          <link rel="manifest" href="/site.webmanifest"/>
+          <meta name="mobile-web-app-capable" content="yes"/>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
           <meta name="apple-mobile-web-app-title" content="React Table"/>
-          <link rel="apple-touch-icon" href="/logo192.png"/>
-
           <meta charSet="utf-8"/>
-          <meta name="viewport" content="width=device-width, initial-scale=1"/>
           <meta name="theme-color" content="#000000"/>
           <meta
             name="description"
             content="web site for game table"
           />
-
           <meta name="keywords" content="table, game, react, pwa"/>
           <meta name="author" content="AS"/>
-
-          <title>React Table</title>
         </Head>
         <body>
         <Main/>
