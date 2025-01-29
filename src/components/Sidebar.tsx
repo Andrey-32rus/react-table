@@ -1,10 +1,8 @@
 import React, {ReactNode, useEffect, useState} from 'react';
-import {Container} from "react-bootstrap";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import {useRouter} from "next/router";
-import Link from "next/link";
 import Script from "next/script";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 interface SidebarProps {
   children: ReactNode;
@@ -39,8 +37,9 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         <a className="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
         {/*<!-- Sidebar Toggle-->*/}
         {/*   href="#!"  */}
-        <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i
-          className="fas fa-bars"></i></button>
+        <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
+          <FontAwesomeIcon icon={faBars} />
+        </button>
         {/*<!-- Navbar Search-->*/}
         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
           <div className="input-group">
@@ -151,7 +150,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           <footer className="py-4 bg-light mt-auto">
             <div className="container-fluid px-4">
               <div className="d-flex align-items-center justify-content-between small">
-                <div className="text-muted">Copyright &copy; Your Website 2023</div>
+                <div className="text-muted">Copyright &copy; Your Website 2025</div>
                 <div>
                   <a href="#">Privacy Policy</a>
                   &middot;
@@ -162,7 +161,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           </footer>
         </div>
       </div>
-      <Script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" strategy="afterInteractive"></Script>
       <Script src="/sidebar-toggle.js" strategy="afterInteractive"/>
     </>
   );
