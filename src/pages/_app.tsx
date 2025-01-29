@@ -7,9 +7,11 @@ import Sidebar from "../components/Sidebar";
 import store from "../store/store";
 import {Provider} from "react-redux";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
+      <SessionProvider session={pageProps.session}>
         <Provider store={store}>
           <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -17,8 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Head>
           <Sidebar>
                 <Component {...pageProps} />
-            </Sidebar>
+          </Sidebar>
         </Provider>
+      </SessionProvider>
     );
 }
 
