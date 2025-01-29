@@ -1,6 +1,4 @@
 import React, {ReactNode, useEffect, useState} from 'react';
-import {useRouter} from "next/router";
-import Script from "next/script";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBookOpen, faTable, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import {useSession} from "next-auth/react";
@@ -18,26 +16,22 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js")
   }, []);
 
-  const router = useRouter(); // Доступ к маршрутам
+  const [sidebarToggled, setSidebarToggled] = useState<boolean>(false);
 
-  const [currentPath, setCurrentPath] = useState<string>(''); // Текущее местоположение
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Устанавливаем текущий путь на клиентской стороне
-      setCurrentPath(router.pathname);
-    }
-  }, [router.pathname]); // Обновляем, если путь изменился
-
-  const isActive = (href: string) => {
-    return currentPath === href ? 'nav-link active' : 'nav-link text-white';
+  const sidebarToggleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    document.body.classList.toggle('sb-sidenav-toggled');
+    localStorage.setItem('sb|sidebar-toggle', String(!sidebarToggled));
+    setSidebarToggled(!sidebarToggled)
   }
+
+
 
   return (
     <>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         {/*<!-- Sidebar Toggle-->*/}
-        <button className="btn btn-link btn-sm order-0 ms-2 me-4 me-lg-0" id="sidebarToggle">
+        <button className="btn btn-link btn-sm order-0 ms-2 me-4 me-lg-0" id="sidebarToggle" onClick={sidebarToggleClick}>
           <FontAwesomeIcon icon={faBars}/>
         </button>
         {/*<!-- Navbar Brand-->*/}
@@ -108,7 +102,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           </footer>
         </div>
       </div>
-      <Script src="/sidebar-toggle.js" strategy="afterInteractive"/>
     </>
   );
 };
