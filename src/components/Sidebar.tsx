@@ -37,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     <>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         {/*<!-- Navbar Brand-->*/}
-        <a className="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <a className="navbar-brand ps-3" href="/">React Table</a>
         {/*<!-- Sidebar Toggle-->*/}
         {/*   href="#!"  */}
         <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">

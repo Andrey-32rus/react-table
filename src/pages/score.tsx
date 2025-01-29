@@ -64,8 +64,6 @@ const ScorePage: React.FC<Props> = (props) => {
     const dispatch = useAppDispatch();
 
     const gameData = useAppSelector((state) => state.game.data);
-    const loading = useAppSelector((state) => state.game.loading);
-    const error = useAppSelector((state) => state.game.error);
 
     const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
     const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
@@ -182,8 +180,8 @@ const ScorePage: React.FC<Props> = (props) => {
         }
     }
         return (
-          <Container fluid>
-              <h3 className='mb-2'>Таблица игры</h3>
+          <Container fluid className="px-4 mt-4">
+              <h3 className='mb-2'>Игровая таблица</h3>
               <GameTable
                 players={players}
                 rows={rows}
