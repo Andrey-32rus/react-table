@@ -36,12 +36,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   return (
     <>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        {/*<!-- Navbar Brand-->*/}
-        <a className="navbar-brand ps-3" href="/">React Table</a>
         {/*<!-- Sidebar Toggle-->*/}
-        <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
+        <button className="btn btn-link btn-sm order-0 ms-2 me-4 me-lg-0" id="sidebarToggle">
           <FontAwesomeIcon icon={faBars}/>
         </button>
+        {/*<!-- Navbar Brand-->*/}
+        <a className="navbar-brand ps-3" href="/">React Table</a>
         {/*<!-- Navbar Search-->*/}
         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         </form>
