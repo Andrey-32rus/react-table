@@ -162,9 +162,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           </footer>
         </div>
       </div>
-      {/*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossOrigin="anonymous"></script>*/}
-      <Script src="/sidebar-toggle.js" strategy="afterInteractive"/>
       <Script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" strategy="afterInteractive"></Script>
+      <Script src="/sidebar-toggle.js" strategy="afterInteractive"/>
     </>
   );
 };
