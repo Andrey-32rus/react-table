@@ -11,6 +11,11 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   const { data: session } = useSession();
 
+  useEffect(() => {
+    // @ts-ignore
+    import("bootstrap/dist/js/bootstrap.bundle.min.js")
+  }, []);
+
   const [sidebarToggled, setSidebarToggled] = useState<boolean>(false);
 
   const sidebarToggleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
