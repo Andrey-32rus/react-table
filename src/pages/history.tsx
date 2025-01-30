@@ -11,7 +11,7 @@ import {GetServerSideProps} from "next";
 import path from "path";
 import fs from "fs";
 import GameTable from "../components/UI/GameTable";
-import {saveGame} from "../store/slices/gameSlice";
+import {setGameData} from "../store/slices/gameSlice";
 import {getSession} from "next-auth/react";
 
 export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async (context) => {
@@ -75,7 +75,7 @@ const HistoryPage : React.FC<Props> = ({ saves }) => {
 
             for (const save of saves) {
                 if(save.name === gameName) {
-                    await dispatch(saveGame(save.data))
+                    await dispatch(setGameData(save.data))
                     router.push(routes.scoreTable);
                 }
             }

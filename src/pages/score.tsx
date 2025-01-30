@@ -8,8 +8,8 @@ import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {router} from "next/client";
 import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
-import {saveGame} from "../store/slices/gameSlice";
 import {getSession} from "next-auth/react";
+import {setGameData} from "../store/slices/gameSlice";
 
 export const getServerSideProps: GetServerSideProps<{ gameData: ScoreTableModel | null }> = async (context) => {
     const session = await getSession(context);
@@ -23,31 +23,11 @@ export const getServerSideProps: GetServerSideProps<{ gameData: ScoreTableModel 
         };
     }
 
-    try {
-        const filePath = path.resolve('current.json');
-
-        if (!fs.existsSync(filePath)) {
-            return {
-                props: {
-                    gameData: null, // Возвращаем объект с `gameData: null`
-                },
-            };
-        }
-
-        const gameData: ScoreTableModel = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        return {
-            props: {
-                gameData, // Возвращаем объект с `gameData`
-            },
-        };
-    } catch (error) {
-        console.error('Error reading game data:', error);
-        return {
-            props: {
-                gameData: null, // В случае ошибки возвращаем объект с `gameData: null`
-            },
-        };
-    }
+    return {
+        props: {
+            gameData: null
+        },
+    };
 };
 
 
@@ -102,7 +82,7 @@ const ScorePage: React.FC<Props> = (props) => {
             };
 
             if (JSON.stringify(gameData) !== JSON.stringify(currentData)) {
-                dispatch(saveGame(currentData));
+                dispatch(setGameData(currentData));
             }
 
         }

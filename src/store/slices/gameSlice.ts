@@ -1,19 +1,8 @@
-// slices/gameSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ScoreTableModel } from '../../models/ScoreTableModel';
 
-// Типы данных для стейта
-export type GameState = {
+interface GameState {
   data: ScoreTableModel | null;
-};
-
-export const defaultGameState: GameState = {
-  data: {
-    players :[],
-    rows : [],
-    removedRows: [],
-    savedRows: [],
-  }
 }
 
 const initialState: GameState = {
