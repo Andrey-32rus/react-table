@@ -14,7 +14,6 @@ import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
-import {useSession} from "next-auth/react";
 
 export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async (context) => {
     const session = await getServerSession(context.req, context.res, authOptions);
@@ -67,7 +66,6 @@ const HistoryPage : React.FC<Props> = ({ saves }) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [game, setGame] = useState<ScoreTableModel | null>(null);
-    const { data: session } = useSession();
 
     const loadGame = async (gameName: string) => {
         if(!saves)
@@ -148,7 +146,7 @@ const HistoryPage : React.FC<Props> = ({ saves }) => {
         return rows;
     };
 
-    if(!session) {
+    if(!saves) {
         return (
           <Container fluid>
               <p>Пожалуйста, авторизуйтесь, для просмотра истории. История доступна только авторизованным пользователям.</p>
