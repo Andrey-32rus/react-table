@@ -1,45 +1,43 @@
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { GetServerSideProps } from "next";
+import {useRouter} from "next/router";
+import {getServerSession} from "next-auth";
+import {authOptions} from "../api/auth/[...nextauth]";
 
 // Проверка авторизации на сервере
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
+  const session = await getServerSession(context.req, context.res, authOptions);
+
   if (session) {
     return {
       redirect: {
-        destination: "/score",
+        destination: "/",
         permanent: false,
       },
     };
   }
+
   return {
     props: {},
   };
+
 };
 
 const SignIn = () => {
+  const router = useRouter();
+  const callbackUrl = router.query.callbackUrl as string | undefined;
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const username = (document.getElementById("inputUser") as HTMLInputElement).value;
     const password = (document.getElementById("inputPassword") as HTMLInputElement).value;
 
-    try {
-      const result = await signIn("credentials", {
-        username,
-        password,
-        redirect: false, // Отключаем автоматический редирект для отладки
-      });
-
-      if (result?.error) {
-        console.error("Ошибка авторизации:", result.error);
-        alert("Неверный логин или пароль");
-      } else {
-        window.location.href = "/score"; // Ручной редирект после успешной авторизации
-      }
-    } catch (error) {
-      console.error("Произошла ошибка:", error);
-      alert("Что-то пошло не так");
-    }
+    const result = await signIn("credentials", {
+      username,
+      password,
+      redirect: true,
+      callbackUrl: callbackUrl || "/"
+    });
   };
 
   return (

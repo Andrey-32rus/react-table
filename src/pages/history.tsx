@@ -12,15 +12,18 @@ import path from "path";
 import fs from "fs";
 import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
-import {getSession} from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async (context) => {
-    const session = await getSession(context);
+    const session = await getServerSession(context.req, context.res, authOptions);
 
     if (!session) {
         return {
             redirect: {
-                destination: "/auth/signin",
+                destination: `/auth/signin?callbackUrl=${encodeURIComponent(
+                  context.resolvedUrl
+                )}`,
                 permanent: false,
             },
         };

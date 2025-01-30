@@ -8,39 +8,9 @@ import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {router} from "next/client";
 import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
-import {getSession} from "next-auth/react";
 import {setGameData} from "../store/slices/gameSlice";
 
-export const getServerSideProps: GetServerSideProps<{ gameData: ScoreTableModel | null }> = async (context) => {
-    const session = await getSession(context);
-
-    if (!session) {
-        return {
-            redirect: {
-                destination: "/auth/signin",
-                permanent: false,
-            },
-        };
-    }
-
-    return {
-        props: {
-            gameData: null
-        },
-    };
-};
-
-
-interface Props {
-    gameData: ScoreTableModel | null;
-}
-
-type Save = {
-    name: string;
-    data: ScoreTableModel;
-};
-
-const ScorePage: React.FC<Props> = (props) => {
+const ScorePage: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const gameData = useAppSelector((state) => state.game.data);
@@ -51,14 +21,8 @@ const ScorePage: React.FC<Props> = (props) => {
     const [rows, setRows] = useState<string[][]>([]);
 
     useEffect(() => {
-        if (!gameData && !props.gameData) {
+        if (!gameData) {
             router.replace('/inputUsers')
-        }
-        if (!gameData && props.gameData) {
-            setPlayers(props.gameData.players);
-            setRows(props.gameData.rows);
-            setRemovedRows(new Set(props.gameData.removedRows));
-            setSavedRows(new Set(props.gameData.savedRows));
         }
     }, []);
 

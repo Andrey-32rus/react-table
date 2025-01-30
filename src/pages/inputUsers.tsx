@@ -9,25 +9,6 @@ import { routes } from '../navigation/navigation';
 import { useAppDispatch } from '../store/hooks'
 import {useRouter} from "next/router";
 import {setGameData} from "../store/slices/gameSlice";
-import {GetServerSideProps} from "next";
-import {getSession} from "next-auth/react";
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
-
-    if (!session) {
-        return {
-            redirect: {
-                destination: "/auth/signin",
-                permanent: false,
-            },
-        };
-    }
-
-    return {
-        props: {},
-    };
-};
 
 const InputUsersPage: React.FC = () => {
 
