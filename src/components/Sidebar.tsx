@@ -96,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           <footer className="py-4 bg-light mt-auto">
             <div className="container-fluid px-4">
               <div className="d-flex align-items-center justify-content-between small">
-                <div className="text-muted">Copyright &copy; Your Website 2025</div>
+                <div className="text-muted">Copyright &copy; React Table 2025</div>
               </div>
             </div>
           </footer>
