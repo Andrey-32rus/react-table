@@ -90,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({children}) => {
               {!session &&
                 <>
                   <div className="small">Not Logged in:</div>
-                  Please Login
+                  Please <a href="/auth/signin">Login</a>
                 </>
               }
             </div>
