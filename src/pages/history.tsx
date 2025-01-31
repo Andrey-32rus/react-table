@@ -12,8 +12,9 @@ import path from "path";
 import fs from "fs";
 import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
-import {getServerSession, Session} from "next-auth";
+import {getServerSession} from "next-auth";
 import {authOptions} from "./api/auth/[...nextauth]";
+import {getUserSession, User} from "../lib/userSession";
 
 type Save = {
   name: string,
@@ -25,22 +26,6 @@ interface Props {
   saves: Save[] | null;
 }
 
-interface User {
-  name: string | null;
-}
-
-export const getUserSession = async (fn: () => Promise<Session | null>): Promise<User | null> => {
-  // Получаем сессию
-  const session = await fn()
-
-  // Если сессии нет или email отсутствует, возвращаем null
-  if (!session?.user?.name) {
-    return null;
-  }
-
-  // Возвращаем email пользователя
-  return {name: session.user.name};
-}
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const user = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
@@ -170,17 +155,17 @@ const HistoryPage: React.FC<Props> = ({user, saves}) => {
   return (
     <Container fluid>
       {game &&
-        <>
-          <Button className="mb-3" onClick={backToHistory}>
-            {'<---'}
-          </Button>
-          <GameTable
-            players={game.players}
-            rows={game.rows}
-            removedRows={new Set(game.removedRows)}
-            savedRows={new Set(game.savedRows)}
-          />
-        </>
+          <>
+              <Button className="mb-3" onClick={backToHistory}>
+                {'<---'}
+              </Button>
+              <GameTable
+                  players={game.players}
+                  rows={game.rows}
+                  removedRows={new Set(game.removedRows)}
+                  savedRows={new Set(game.savedRows)}
+              />
+          </>
       }
       {!game && renderSaves()}
     </Container>

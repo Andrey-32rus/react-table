@@ -6,13 +6,27 @@ import {router} from "next/client";
 import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
-import {useSession} from "next-auth/react";
+import {GetServerSideProps} from "next";
+import {getServerSession} from "next-auth";
+import {authOptions} from "./api/auth/[...nextauth]";
+import {getUserSession, User} from "../lib/userSession";
 
-const ScorePage: React.FC = () => {
+interface Props {
+  user: User | null,
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+  const user = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
+  return {
+    props: {
+      user,
+    },
+  };
+};
+
+const ScorePage: React.FC<Props> = ({user}) => {
   const dispatch = useAppDispatch();
   const gameData = useAppSelector((state) => state.game.data);
-
-  const {data: session} = useSession();
 
   const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
   const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
@@ -142,7 +156,7 @@ const ScorePage: React.FC = () => {
             <div>
               <Button variant="primary" onClick={addRow}>+</Button>
             </div>
-            {session &&
+            {user &&
               <div className='d-flex flex-row-reverse mt-2'>
                 <Button variant="success" onClick={saveGameHandler}>save game</Button>
               </div>
