@@ -12,9 +12,9 @@ import path from "path";
 import fs from "fs";
 import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
-import {getServerSession} from "next-auth";
+import {getServerSession, Session} from "next-auth";
 import {authOptions} from "./api/auth/[...nextauth]";
-import {getUserSession, User} from "../lib/userSession";
+import {getUserSession} from "../lib/userSession";
 
 type Save = {
   name: string,
@@ -22,13 +22,13 @@ type Save = {
 }
 
 interface Props {
-  user: User | null,
+  session: Session | null,
   saves: Save[] | null;
 }
 
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const user = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
+  const session = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
   try {
     const filePath = path.resolve('saves.json');
 
@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
       console.error('Error reading game data: file not exists');
       return {
         props: {
-          user,
+          session,
           saves: null,
         },
       };
@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     const saves: Save[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     return {
       props: {
-        user,
+        session,
         saves, // Возвращаем объект с `gameData`
       },
     };
@@ -53,14 +53,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     console.error('Error reading game data:', error);
     return {
       props: {
-        user,
+        session,
         saves: null, // В случае ошибки возвращаем объект с `gameData: null`
       },
     };
   }
 };
 
-const HistoryPage: React.FC<Props> = ({user, saves}) => {
+const HistoryPage: React.FC<Props> = ({session, saves}) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [game, setGame] = useState<ScoreTableModel | null>(null);
@@ -144,7 +144,7 @@ const HistoryPage: React.FC<Props> = ({user, saves}) => {
     return rows;
   };
 
-  if (!user) {
+  if (!session) {
     return (
       <Container fluid>
         <p>Пожалуйста, авторизуйтесь, для просмотра истории. История доступна только авторизованным пользователям.</p>
@@ -155,17 +155,17 @@ const HistoryPage: React.FC<Props> = ({user, saves}) => {
   return (
     <Container fluid>
       {game &&
-          <>
-              <Button className="mb-3" onClick={backToHistory}>
-                {'<---'}
-              </Button>
-              <GameTable
-                  players={game.players}
-                  rows={game.rows}
-                  removedRows={new Set(game.removedRows)}
-                  savedRows={new Set(game.savedRows)}
-              />
-          </>
+        <>
+          <Button className="mb-3" onClick={backToHistory}>
+            {'<---'}
+          </Button>
+          <GameTable
+            players={game.players}
+            rows={game.rows}
+            removedRows={new Set(game.removedRows)}
+            savedRows={new Set(game.savedRows)}
+          />
+        </>
       }
       {!game && renderSaves()}
     </Container>

@@ -1,18 +1,17 @@
 import {Session} from "next-auth";
 
-export interface User {
-  name: string | null;
-}
-
-export const getUserSession = async (fn: () => Promise<Session | null>): Promise<User | null> => {
+export const getUserSession = async (fn: () => Promise<Session | null>): Promise<Session | null> => {
   // Получаем сессию
   const session = await fn()
 
-  // Если сессии нет или email отсутствует, возвращаем null
-  if (!session?.user?.name) {
-    return null;
-  }
+  if (!session) return null
+  if (!session.user) return null
+  if (session.user.name === undefined)
+    session.user.name = null
+  if (session.user.email === undefined)
+    session.user.email = null
+  if (session.user.image === undefined)
+    session.user.image = null
 
-  // Возвращаем email пользователя
-  return {name: session.user.name};
+  return session
 }

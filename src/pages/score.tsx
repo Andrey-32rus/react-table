@@ -7,24 +7,24 @@ import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
 import {GetServerSideProps} from "next";
-import {getServerSession} from "next-auth";
+import {getServerSession, Session} from "next-auth";
 import {authOptions} from "./api/auth/[...nextauth]";
-import {getUserSession, User} from "../lib/userSession";
+import {getUserSession} from "../lib/userSession";
 
 interface Props {
-  user: User | null,
+  session: Session | null,
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const user = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
+  const session = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
   return {
     props: {
-      user,
+      session,
     },
   };
 };
 
-const ScorePage: React.FC<Props> = ({user}) => {
+const ScorePage: React.FC<Props> = ({session}) => {
   const dispatch = useAppDispatch();
   const gameData = useAppSelector((state) => state.game.data);
 
@@ -156,7 +156,7 @@ const ScorePage: React.FC<Props> = ({user}) => {
             <div>
               <Button variant="primary" onClick={addRow}>+</Button>
             </div>
-            {user &&
+            {session &&
               <div className='d-flex flex-row-reverse mt-2'>
                 <Button variant="success" onClick={saveGameHandler}>save game</Button>
               </div>
