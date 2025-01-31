@@ -12,26 +12,46 @@ import path from "path";
 import fs from "fs";
 import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
-import { getServerSession } from "next-auth";
+import {getServerSession, Session} from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 
-export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = async (context) => {
-    const session = await getServerSession(context.req, context.res, authOptions);
+type Save = {
+    name : string,
+    data : ScoreTableModel,
+}
 
-    if (!session) {
-        return {
-            props: {
-                saves: null, // В случае ошибки возвращаем объект с `gameData: null`
-            },
-        };
+interface Props {
+    session: User | null,
+    saves: Save[] | null;
+}
+
+interface User {
+    name: string | null;
+}
+
+export const getUserSession = async (fn:  () => Promise<Session | null>): Promise<User> => {
+    // Получаем сессию
+    const session = await fn()
+
+    // Если сессии нет или email отсутствует, возвращаем null
+    if (!session?.user?.name) {
+        return { name: null };
     }
 
+    // Возвращаем email пользователя
+    return { name: session.user.name };
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+    const session = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
     try {
         const filePath = path.resolve('saves.json');
 
         if (!fs.existsSync(filePath)) {
+            console.error('Error reading game data: file not exists');
             return {
                 props: {
+                    session,
                     saves: null,
                 },
             };
@@ -40,6 +60,7 @@ export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = 
         const saves: Save[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         return {
             props: {
+                session,
                 saves, // Возвращаем объект с `gameData`
             },
         };
@@ -47,22 +68,14 @@ export const getServerSideProps: GetServerSideProps<{ saves: Save[] | null }> = 
         console.error('Error reading game data:', error);
         return {
             props: {
+                session,
                 saves: null, // В случае ошибки возвращаем объект с `gameData: null`
             },
         };
     }
 };
 
-type Save = {
-    name : string,
-    data : ScoreTableModel,
-}
-
-interface Props {
-    saves: Save[] | null;
-}
-
-const HistoryPage : React.FC<Props> = ({ saves }) => {
+const HistoryPage : React.FC<Props> = ({ session, saves }) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [game, setGame] = useState<ScoreTableModel | null>(null);
@@ -146,7 +159,7 @@ const HistoryPage : React.FC<Props> = ({ saves }) => {
         return rows;
     };
 
-    if(!saves) {
+    if(!session) {
         return (
           <Container fluid>
               <p>Пожалуйста, авторизуйтесь, для просмотра истории. История доступна только авторизованным пользователям.</p>
