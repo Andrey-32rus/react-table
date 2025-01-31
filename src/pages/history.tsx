@@ -21,7 +21,7 @@ type Save = {
 }
 
 interface Props {
-    session: User | null,
+    user: User | null,
     saves: Save[] | null;
 }
 
@@ -43,7 +43,7 @@ export const getUserSession = async (fn:  () => Promise<Session | null>): Promis
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-    const session = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
+    const user = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
     try {
         const filePath = path.resolve('saves.json');
 
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
             console.error('Error reading game data: file not exists');
             return {
                 props: {
-                    session,
+                    user,
                     saves: null,
                 },
             };
@@ -60,7 +60,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
         const saves: Save[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         return {
             props: {
-                session,
+                user,
                 saves, // Возвращаем объект с `gameData`
             },
         };
@@ -68,14 +68,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
         console.error('Error reading game data:', error);
         return {
             props: {
-                session,
+                user,
                 saves: null, // В случае ошибки возвращаем объект с `gameData: null`
             },
         };
     }
 };
 
-const HistoryPage : React.FC<Props> = ({ session, saves }) => {
+const HistoryPage : React.FC<Props> = ({ user, saves }) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [game, setGame] = useState<ScoreTableModel | null>(null);
@@ -159,7 +159,7 @@ const HistoryPage : React.FC<Props> = ({ session, saves }) => {
         return rows;
     };
 
-    if(!session) {
+    if(!user) {
         return (
           <Container fluid>
               <p>Пожалуйста, авторизуйтесь, для просмотра истории. История доступна только авторизованным пользователям.</p>
