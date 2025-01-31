@@ -6,11 +6,13 @@ import {router} from "next/client";
 import {Button, Container} from "react-bootstrap";
 import GameTable from "../components/UI/GameTable";
 import {setGameData} from "../store/slices/gameSlice";
+import {useSession} from "next-auth/react";
 
 const ScorePage: React.FC = () => {
   const dispatch = useAppDispatch();
-
   const gameData = useAppSelector((state) => state.game.data);
+
+  const {data: session} = useSession();
 
   const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
   const [savedRows, setSavedRows] = useState<Set<number>>(new Set);
@@ -140,9 +142,11 @@ const ScorePage: React.FC = () => {
             <div>
               <Button variant="primary" onClick={addRow}>+</Button>
             </div>
-            <div className='d-flex flex-row-reverse mt-2'>
-              <Button variant="success" onClick={saveGameHandler}>save game</Button>
-            </div>
+            {session &&
+              <div className='d-flex flex-row-reverse mt-2'>
+                <Button variant="success" onClick={saveGameHandler}>save game</Button>
+              </div>
+            }
           </div>
         </>
       }
