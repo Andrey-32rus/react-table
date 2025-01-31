@@ -1,15 +1,15 @@
 import React, {ReactNode, useEffect, useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faBookOpen, faTable, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
-import {useSession} from "next-auth/react";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faBars, faBookOpen, faTable, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {signOut, useSession} from "next-auth/react";
 
 interface SidebarProps {
   children: ReactNode;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children }) => {
+const Sidebar: React.FC<SidebarProps> = ({children}) => {
 
-  const { data: session } = useSession();
+  const {data: session} = useSession();
 
   useEffect(() => {
     // @ts-ignore
@@ -18,7 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   const [sidebarToggled, setSidebarToggled] = useState<boolean>(false);
 
-  const sidebarToggleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
+  const sidebarToggleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     document.body.classList.toggle('sb-sidenav-toggled');
     localStorage.setItem('sb|sidebar-toggle', String(!sidebarToggled));
@@ -26,12 +26,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   }
 
 
-
   return (
     <>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         {/*<!-- Sidebar Toggle-->*/}
-        <button className="btn btn-link btn-sm order-0 ms-2 me-4 me-lg-0" id="sidebarToggle" onClick={sidebarToggleClick}>
+        <button className="btn btn-link btn-sm order-0 ms-2 me-4 me-lg-0" id="sidebarToggle"
+                onClick={sidebarToggleClick}>
           <FontAwesomeIcon icon={faBars}/>
         </button>
         {/*<!-- Navbar Brand-->*/}
@@ -54,7 +54,8 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
               <FontAwesomeIcon icon={faUser} fixedWidth/>
             </a>
             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a className="dropdown-item" href="/">Logout</a></li>
+              {session && <li onClick={async () => await signOut()}><a className="dropdown-item">Logout</a></li>}
+              {!session && <li><a className="dropdown-item" href="/auth/signin">Login</a></li>}
             </ul>
           </li>
         </ul>
@@ -81,10 +82,16 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             </div>
             <div className="sb-sidenav-footer">
               {session &&
-              <>
+                <>
                   <div className="small">Logged in as:</div>
                   {session.user?.name}
-              </>
+                </>
+              }
+              {!session &&
+                <>
+                  <div className="small">Not Logged in:</div>
+                  Please Login
+                </>
               }
             </div>
           </nav>
