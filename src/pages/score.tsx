@@ -146,9 +146,6 @@ const ScorePage: React.FC = () => {
           </div>
         </>
       }
-      {players.length === 0 &&
-        <h1 className="mt-4">No players. Redirecting...</h1>
-      }
     </Container>
   )
 }
