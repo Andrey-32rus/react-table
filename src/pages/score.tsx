@@ -9,7 +9,7 @@ import {setGameData} from "../store/slices/gameSlice";
 
 const ScorePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  
+
   const gameData = useAppSelector((state) => state.game.data);
 
   const [removedRows, setRemovedRows] = useState<Set<number>>(new Set);
@@ -122,26 +122,33 @@ const ScorePage: React.FC = () => {
   }
   return (
     <Container fluid className="px-4 mt-4">
-      <h3 className='mb-2'>Игровая таблица</h3>
-      <GameTable
-        players={players}
-        rows={rows}
-        removedRows={removedRows}
-        savedRows={savedRows}
-        funcs={{
-          changeInputText: changeInputText,
-          removeRow: removeRow,
-          saveRow: saveRow,
-        }}
-      />
-      <div>
-        <div>
-          <Button variant="primary" onClick={addRow}>+</Button>
-        </div>
-        <div className='d-flex flex-row-reverse mt-2'>
-          <Button variant="success" onClick={saveGameHandler}>save game</Button>
-        </div>
-      </div>
+      {players.length > 0 &&
+        <>
+          <h3 className='mb-2'>Игровая таблица</h3>
+          <GameTable
+            players={players}
+            rows={rows}
+            removedRows={removedRows}
+            savedRows={savedRows}
+            funcs={{
+              changeInputText: changeInputText,
+              removeRow: removeRow,
+              saveRow: saveRow,
+            }}
+          />
+          <div>
+            <div>
+              <Button variant="primary" onClick={addRow}>+</Button>
+            </div>
+            <div className='d-flex flex-row-reverse mt-2'>
+              <Button variant="success" onClick={saveGameHandler}>save game</Button>
+            </div>
+          </div>
+        </>
+      }
+      {players.length === 0 &&
+        <h1 className="mt-4">No players. Redirecting...</h1>
+      }
     </Container>
   )
 }
