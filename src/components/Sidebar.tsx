@@ -18,7 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({children}) => {
 
   const [sidebarToggled, setSidebarToggled] = useState<boolean>(false);
 
-  const sidebarToggleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const sidebarToggleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     document.body.classList.toggle('sb-sidenav-toggled');
     localStorage.setItem('sb|sidebar-toggle', String(!sidebarToggled));
@@ -96,6 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({children}) => {
             </div>
           </nav>
         </div>
+        <div id="layoutSidenav_overlay" onClick={sidebarToggleClick}></div>
         <div id="layoutSidenav_content">
           <main>
             {children}

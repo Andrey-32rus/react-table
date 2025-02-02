@@ -10883,7 +10883,8 @@ body {
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
   transform: translateX(0);
 }
-.sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
+
+.sb-sidenav-toggled #layoutSidenav #layoutSidenav_overlay{
   content: "";
   display: block;
   position: absolute;
@@ -10911,7 +10912,7 @@ body {
   .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
     margin-left: -225px;
   }
-  .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
+  .sb-sidenav-toggled #layoutSidenav #layoutSidenav_overlay {
     display: none;
   }
 }
