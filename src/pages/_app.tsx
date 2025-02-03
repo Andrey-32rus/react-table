@@ -14,6 +14,13 @@ type PageProps = {
   session: Session | null;
 }
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "React Table",
+  "url": "https://react-table.ru",
+};
+
 function MyApp({Component, pageProps}: AppProps<PageProps>) {
   return (
     <SessionProvider session={pageProps.session}>
@@ -21,6 +28,7 @@ function MyApp({Component, pageProps}: AppProps<PageProps>) {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
           <title>React Table</title>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         </Head>
         <Sidebar>
           <Component {...pageProps} />
