@@ -27,7 +27,7 @@ function MyApp({Component, pageProps}: AppProps<PageProps>) {
       <Provider store={store}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
-          <title>React Table</title>
+          <title>Результаты игр — таблицы и статистика для всех популярных игр</title>
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         </Head>
         <Sidebar>

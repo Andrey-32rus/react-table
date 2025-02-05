@@ -18,11 +18,9 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="React Table"/>
           <meta charSet="utf-8"/>
           <meta name="theme-color" content="#000000"/>
-          <meta
-            name="description"
-            content="web site for game table"
-          />
-          <meta name="keywords" content="table, game, react, pwa"/>
+          <meta name="description"
+                content="Следите за результатами игр в режиме реального времени. Актуальные таблицы, статистика и рейтинги для всех популярных игр. Удобный и понятный интерфейс."/>
+          <meta name="keywords" content="результаты игр, таблицы игр, статистика игр, рейтинги игр, результаты матчей"/>
           <meta name="author" content="AS"/>
           <Script
             id="yandex-metrika"
