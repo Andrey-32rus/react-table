@@ -10884,18 +10884,18 @@ body {
   transform: translateX(0);
 }
 
-.sb-sidenav-toggled #layoutSidenav #layoutSidenav_overlay{
+.sb-sidenav-toggled #layoutSidenav #layoutSidenav_overlay {
   content: "";
   display: block;
-  position: absolute;
+  position: fixed; /* Сделано fixed для фиксированного позиционирования */
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh; /* Высота на весь экран */
   background: #000;
   z-index: 1037;
-  opacity: 0.5;
-  transition: opacity 0.3s ease-in-out;
+  opacity: .5;
+  transition: opacity .3s ease-in-out;
 }
 
 @media (min-width: 992px) {
