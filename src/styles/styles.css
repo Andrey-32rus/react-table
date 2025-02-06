@@ -10895,7 +10895,6 @@ body {
   background: #000;
   z-index: 1037;
   opacity: .5;
-  transition: opacity .3s ease-in-out;
 }
 
 @media (min-width: 992px) {
