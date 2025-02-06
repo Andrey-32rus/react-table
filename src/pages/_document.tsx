@@ -22,6 +22,7 @@ class MyDocument extends Document {
                 content="Следите за результатами игр в режиме реального времени. Актуальные таблицы, статистика и рейтинги для всех популярных игр. Удобный и понятный интерфейс."/>
           <meta name="keywords" content="результаты игр, таблицы игр, статистика игр, рейтинги игр, результаты матчей"/>
           <meta name="author" content="AS"/>
+          <meta name="yandex-verification" content="989961940bb6b9b2" />
           <Script
             id="yandex-metrika"
             strategy="afterInteractive"
