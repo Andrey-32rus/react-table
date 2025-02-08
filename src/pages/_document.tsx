@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, {Html, Head, Main, NextScript} from 'next/document';
 import Script from "next/script";
 
 class MyDocument extends Document {
@@ -15,14 +15,13 @@ class MyDocument extends Document {
           <meta name="mobile-web-app-capable" content="yes"/>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-          <meta name="apple-mobile-web-app-title" content="React Table"/>
           <meta charSet="utf-8"/>
           <meta name="theme-color" content="#000000"/>
           <meta name="description"
                 content="Следите за результатами игр в режиме реального времени. Актуальные таблицы, статистика и рейтинги для всех популярных игр. Удобный и понятный интерфейс."/>
           <meta name="keywords" content="результаты игр, таблицы игр, статистика игр, рейтинги игр, результаты матчей"/>
           <meta name="author" content="AS"/>
-          <meta name="yandex-verification" content="989961940bb6b9b2" />
+          <meta name="yandex-verification" content="989961940bb6b9b2"/>
           <Script
             id="yandex-metrika"
             strategy="afterInteractive"
