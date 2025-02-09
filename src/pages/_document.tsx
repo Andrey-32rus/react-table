@@ -6,6 +6,24 @@ class MyDocument extends Document {
     return (
       <Html lang="ru">
         <Head>
+          <link rel="apple-touch-startup-image" href="/iphone-se.png" media="(device-width: 320px)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-6-8.png" media="(device-width: 375px)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-x.png"
+                media="(device-width: 375px) and (device-height: 812px)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-xr.png"
+                media="(device-width: 414px) and (device-height: 896px)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-xs-max.png"
+                media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-12.png"
+                media="(device-width: 390px) and (device-height: 844px)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-12-pro-max.png"
+                media="(device-width: 428px) and (device-height: 926px)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-14-pro.png"
+                media="(device-width: 393px) and (device-height: 852px)"/>
+          <link rel="apple-touch-startup-image" href="/iphone-14-pro-max.png"
+                media="(device-width: 430px) and (device-height: 932px)"/>
+
+
           <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
           <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
           <link rel="shortcut icon" href="/favicon.ico"/>
