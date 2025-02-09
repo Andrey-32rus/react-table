@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const session = await getUserSession(() => getServerSession(context.req, context.res, authOptions))
+  const session = await getUserSession(() => getServerSession(context.req as any, context.res as any, authOptions as any))
   return {
     props: {
       session,
